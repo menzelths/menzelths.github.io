@@ -27,6 +27,8 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   var throwCCE = Kotlin.throwCCE;
   var firstOrNull = Kotlin.kotlin.collections.firstOrNull_2p1efm$;
   var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
+  var ensureNotNull = Kotlin.ensureNotNull;
+  var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var hashMapOf = Kotlin.kotlin.collections.hashMapOf_qfcya0$;
@@ -40,7 +42,6 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   var table = $module$kotlinx_html_js.kotlinx.html.table_dmqmme$;
   var div = $module$kotlinx_html_js.kotlinx.html.div_ri36nr$;
   var div_0 = $module$kotlinx_html_js.kotlinx.html.js.div_wkomt5$;
-  var ensureNotNull = Kotlin.ensureNotNull;
   var append = $module$kotlinx_html_js.kotlinx.html.dom.append_k9bwru$;
   var split = Kotlin.kotlin.text.split_ip8yn$;
   var startsWith = Kotlin.kotlin.text.startsWith_7epoxm$;
@@ -91,6 +92,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     fächer.add_11rb$(new Fach('Informatik', Aufgabenfeld$III_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$kannNawiErsetzen_getInstance())));
     fächer.add_11rb$(new Fach('NwT', Aufgabenfeld$III_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$kannNawiErsetzen_getInstance())));
     fächer.add_11rb$(new Fach('Sport', Aufgabenfeld$Sport_getInstance(), listOf([5, 2, 0]), emptyList()));
+    fächer.add_11rb$(new Fach('Seminarfach', Aufgabenfeld$Seminarfach_getInstance(), listOf([0, 3, 0]), listOf_0(Fachattribute$Seminarfach_getInstance())));
     Belegung$Companion_getInstance().generiereFächer_n5lu7h$(fächer);
     var aktuelleBelegung = new Belegung('Belegung 1');
     aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Mathematik', Belegung$Companion$Kursart$LF_getInstance()]);
@@ -404,7 +406,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
           if (this.aktuelleBelegung_0.contains_11rb$(v)) {
             gewählt = v.typ;
             klickbarWahl.add_11rb$(v.typ);
-            stunden = v.stunden;
+            stunden = v.alternativStunden === false ? v.stunden : v.stundenAlternativ;
             if (v.typ === Belegung$Companion$Kursart$WF_getInstance()) {
               stundenAlternativVorhanden = true;
             }
@@ -745,15 +747,32 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     while (tmp$.hasNext()) {
       var fach = tmp$.next();
       var tmp$_0 = kurssumme;
-      var $receiver = fach.stunden;
-      var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
       var tmp$_1;
-      tmp$_1 = $receiver.iterator();
-      while (tmp$_1.hasNext()) {
-        var item = tmp$_1.next();
-        destination.add_11rb$(item !== 0);
+      if (fach.alternativStunden === false) {
+        var $receiver = fach.stunden;
+        var destination = ArrayList_init();
+        var tmp$_2;
+        tmp$_2 = $receiver.iterator();
+        while (tmp$_2.hasNext()) {
+          var element = tmp$_2.next();
+          if (element !== 0)
+            destination.add_11rb$(element);
+        }
+        tmp$_1 = destination.size;
       }
-      kurssumme = tmp$_0 + destination.size | 0;
+       else {
+        var $receiver_0 = fach.stundenAlternativ;
+        var destination_0 = ArrayList_init();
+        var tmp$_3;
+        tmp$_3 = $receiver_0.iterator();
+        while (tmp$_3.hasNext()) {
+          var element_0 = tmp$_3.next();
+          if (element_0 !== 0)
+            destination_0.add_11rb$(element_0);
+        }
+        tmp$_1 = destination_0.size;
+      }
+      kurssumme = tmp$_0 + tmp$_1 | 0;
     }
     println('Anzahl der gew\xE4hlten Kurse: ' + kurssumme);
     Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$NEUTRAL_getInstance(), 'Anzahl der gew\xE4hlten Kurse: ' + kurssumme));
@@ -769,7 +788,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     tmp$ = this.aktuelleBelegung_0.iterator();
     while (tmp$.hasNext()) {
       var fach = tmp$.next();
-      stundensumme = stundensumme + sum(fach.stunden) | 0;
+      stundensumme = stundensumme + (fach.alternativStunden === false ? sum(fach.stunden) : sum(fach.stundenAlternativ)) | 0;
     }
     var durchschnitt = stundensumme / 4.0;
     println('Durchschnittlich ' + durchschnitt + ' Wochenstunden pro Halbjahr.');
@@ -903,17 +922,17 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     };
   }
   Belegung.prototype.action_4t1mlb$ = function (command, parameter) {
-    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4, tmp$_5;
+    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4, tmp$_5, tmp$_6, tmp$_7;
     loop_label: switch (command.name) {
       case 'NEU':
         var name = typeof (tmp$ = parameter[0]) === 'string' ? tmp$ : throwCCE();
         var typ = Kotlin.isType(tmp$_0 = parameter[1], Belegung$Companion$Kursart) ? tmp$_0 : throwCCE();
         var $receiver = Belegung$Companion_getInstance().fächerauswahl;
         var destination = ArrayList_init();
-        var tmp$_6;
-        tmp$_6 = $receiver.iterator();
-        while (tmp$_6.hasNext()) {
-          var element = tmp$_6.next();
+        var tmp$_8;
+        tmp$_8 = $receiver.iterator();
+        while (tmp$_8.hasNext()) {
+          var element = tmp$_8.next();
           if (equals(element.name, name) && element.typ === typ)
             destination.add_11rb$(element);
         }
@@ -941,6 +960,22 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         var name_0 = typeof (tmp$_1 = parameter[0]) === 'string' ? tmp$_1 : throwCCE();
         removeAll(this.aktuelleBelegung_0, Belegung$action$lambda(name_0));
         break loop_label;
+      case 'TOGGLESTUNDEN':
+        var name_1 = typeof (tmp$_2 = parameter[0]) === 'string' ? tmp$_2 : throwCCE();
+        var typ_0 = Kotlin.isType(tmp$_3 = parameter[1], Belegung$Companion$Kursart) ? tmp$_3 : throwCCE();
+        var $receiver_0 = this.aktuelleBelegung_0;
+        var destination_0 = ArrayList_init();
+        var tmp$_9;
+        tmp$_9 = $receiver_0.iterator();
+        while (tmp$_9.hasNext()) {
+          var element_0 = tmp$_9.next();
+          if (equals(element_0.name, name_1) && element_0.typ === typ_0)
+            destination_0.add_11rb$(element_0);
+        }
+
+        var fach_0 = firstOrNull(destination_0);
+        fach_0 != null ? (fach_0.alternativStunden = !ensureNotNull(fach_0).alternativStunden) : null;
+        break loop_label;
       case 'CHECK':
         Belegung$Companion_getInstance().fehlerMeldungen = ArrayList_init();
         this.testeMehrfach_0();
@@ -952,28 +987,28 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         this.testeMindestens32Wochenstunden_0();
         break loop_label;
       case 'TOGGLEM\xDCNDLICH':
-        var name_1 = typeof (tmp$_2 = parameter[0]) === 'string' ? tmp$_2 : throwCCE();
-        var typ_0 = Kotlin.isType(tmp$_3 = parameter[1], Belegung$Companion$Kursart) ? tmp$_3 : throwCCE();
-        var $receiver_0 = this.aktuelleBelegung_0;
-        var destination_0 = ArrayList_init();
-        var tmp$_7;
-        tmp$_7 = $receiver_0.iterator();
-        while (tmp$_7.hasNext()) {
-          var element_0 = tmp$_7.next();
-          if (element_0.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance()))
-            destination_0.add_11rb$(element_0);
+        var name_2 = typeof (tmp$_4 = parameter[0]) === 'string' ? tmp$_4 : throwCCE();
+        var typ_1 = Kotlin.isType(tmp$_5 = parameter[1], Belegung$Companion$Kursart) ? tmp$_5 : throwCCE();
+        var $receiver_1 = this.aktuelleBelegung_0;
+        var destination_1 = ArrayList_init();
+        var tmp$_10;
+        tmp$_10 = $receiver_1.iterator();
+        while (tmp$_10.hasNext()) {
+          var element_1 = tmp$_10.next();
+          if (element_1.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance()))
+            destination_1.add_11rb$(element_1);
         }
 
-        var anzahlPrüfungsfächer = destination_0.size;
-        var $receiver_1 = this.aktuelleBelegung_0;
+        var anzahlPrüfungsfächer = destination_1.size;
+        var $receiver_2 = this.aktuelleBelegung_0;
         var indexOfFirst$result;
         indexOfFirst$break: do {
-          var tmp$_8;
+          var tmp$_11;
           var index = 0;
-          tmp$_8 = $receiver_1.iterator();
-          while (tmp$_8.hasNext()) {
-            var item = tmp$_8.next();
-            if (equals(item.name, name_1) && item.typ === typ_0) {
+          tmp$_11 = $receiver_2.iterator();
+          while (tmp$_11.hasNext()) {
+            var item = tmp$_11.next();
+            if (equals(item.name, name_2) && item.typ === typ_1) {
               indexOfFirst$result = index;
               break indexOfFirst$break;
             }
@@ -984,13 +1019,13 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
          while (false);
         var schriftlichIndex = indexOfFirst$result;
         if (schriftlichIndex >= 0) {
-          var $receiver_2 = this.aktuelleBelegung_0.get_za3lpa$(schriftlichIndex).attribute;
-          if ($receiver_2.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
-            $receiver_2.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+          var $receiver_3 = this.aktuelleBelegung_0.get_za3lpa$(schriftlichIndex).attribute;
+          if ($receiver_3.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
+            $receiver_3.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
           }
            else {
             if (anzahlPrüfungsfächer < 2) {
-              $receiver_2.add_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+              $receiver_3.add_11rb$(Fachattribute$mündlichePrüfung_getInstance());
             }
              else {
               Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'maximal drei m\xFCndliche Pr\xFCfungsf\xE4cher erlaubt'));
@@ -1001,54 +1036,54 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
 
         break loop_label;
       case 'TOGGLE':
-        var name_2 = typeof (tmp$_4 = parameter[0]) === 'string' ? tmp$_4 : throwCCE();
-        var typ_1 = Kotlin.isType(tmp$_5 = parameter[1], Belegung$Companion$Kursart) ? tmp$_5 : throwCCE();
-        var $receiver_3 = Belegung$Companion_getInstance().fächerauswahl;
-        var destination_1 = ArrayList_init();
-        var tmp$_9;
-        tmp$_9 = $receiver_3.iterator();
-        while (tmp$_9.hasNext()) {
-          var element_1 = tmp$_9.next();
-          if (equals(element_1.name, name_2) && element_1.typ === typ_1)
-            destination_1.add_11rb$(element_1);
+        var name_3 = typeof (tmp$_6 = parameter[0]) === 'string' ? tmp$_6 : throwCCE();
+        var typ_2 = Kotlin.isType(tmp$_7 = parameter[1], Belegung$Companion$Kursart) ? tmp$_7 : throwCCE();
+        var $receiver_4 = Belegung$Companion_getInstance().fächerauswahl;
+        var destination_2 = ArrayList_init();
+        var tmp$_12;
+        tmp$_12 = $receiver_4.iterator();
+        while (tmp$_12.hasNext()) {
+          var element_2 = tmp$_12.next();
+          if (equals(element_2.name, name_3) && element_2.typ === typ_2)
+            destination_2.add_11rb$(element_2);
         }
 
-        var fach_0 = firstOrNull(destination_1);
-        if (fach_0 != null) {
-          var $receiver_4 = this.aktuelleBelegung_0;
-          if ($receiver_4.contains_11rb$(fach_0)) {
-            fach_0.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
-            removeAll($receiver_4, Belegung$action$lambda$lambda(name_2));
+        var fach_1 = firstOrNull(destination_2);
+        if (fach_1 != null) {
+          var $receiver_5 = this.aktuelleBelegung_0;
+          if ($receiver_5.contains_11rb$(fach_1)) {
+            fach_1.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+            removeAll($receiver_5, Belegung$action$lambda$lambda(name_3));
           }
            else {
-            var destination_2 = ArrayList_init_0(collectionSizeOrDefault($receiver_4, 10));
-            var tmp$_10;
-            tmp$_10 = $receiver_4.iterator();
-            while (tmp$_10.hasNext()) {
-              var item_0 = tmp$_10.next();
-              destination_2.add_11rb$(item_0.name);
+            var destination_3 = ArrayList_init_0(collectionSizeOrDefault($receiver_5, 10));
+            var tmp$_13;
+            tmp$_13 = $receiver_5.iterator();
+            while (tmp$_13.hasNext()) {
+              var item_0 = tmp$_13.next();
+              destination_3.add_11rb$(item_0.name);
             }
-            if (destination_2.contains_11rb$(name_2)) {
-              var $receiver_5 = Belegung$Companion_getInstance().fächerauswahl;
-              var destination_3 = ArrayList_init();
-              var tmp$_11;
-              tmp$_11 = $receiver_5.iterator();
-              while (tmp$_11.hasNext()) {
-                var element_2 = tmp$_11.next();
-                if (equals(element_2.name, name_2))
-                  destination_3.add_11rb$(element_2);
+            if (destination_3.contains_11rb$(name_3)) {
+              var $receiver_6 = Belegung$Companion_getInstance().fächerauswahl;
+              var destination_4 = ArrayList_init();
+              var tmp$_14;
+              tmp$_14 = $receiver_6.iterator();
+              while (tmp$_14.hasNext()) {
+                var element_3 = tmp$_14.next();
+                if (equals(element_3.name, name_3))
+                  destination_4.add_11rb$(element_3);
               }
-              var tmp$_12;
-              tmp$_12 = destination_3.iterator();
-              while (tmp$_12.hasNext()) {
-                var element_3 = tmp$_12.next();
-                element_3.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+              var tmp$_15;
+              tmp$_15 = destination_4.iterator();
+              while (tmp$_15.hasNext()) {
+                var element_4 = tmp$_15.next();
+                element_4.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
               }
-              removeAll($receiver_4, Belegung$action$lambda$lambda_0(name_2));
-              $receiver_4.add_11rb$(fach_0);
+              removeAll($receiver_5, Belegung$action$lambda$lambda_0(name_3));
+              $receiver_5.add_11rb$(fach_1);
             }
              else {
-              $receiver_4.add_11rb$(fach_0);
+              $receiver_5.add_11rb$(fach_1);
             }
           }
         }
@@ -1126,6 +1161,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     Belegung$Companion$Aktion$TOGGLE_instance = new Belegung$Companion$Aktion('TOGGLE', 2);
     Belegung$Companion$Aktion$CHECK_instance = new Belegung$Companion$Aktion('CHECK', 3);
     Belegung$Companion$Aktion$TOGGLEMÜNDLICH_instance = new Belegung$Companion$Aktion('TOGGLEM\xDCNDLICH', 4);
+    Belegung$Companion$Aktion$TOGGLESTUNDEN_instance = new Belegung$Companion$Aktion('TOGGLESTUNDEN', 5);
   }
   var Belegung$Companion$Aktion$NEU_instance;
   function Belegung$Companion$Aktion$NEU_getInstance() {
@@ -1152,13 +1188,18 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     Belegung$Companion$Aktion_initFields();
     return Belegung$Companion$Aktion$TOGGLEMÜNDLICH_instance;
   }
+  var Belegung$Companion$Aktion$TOGGLESTUNDEN_instance;
+  function Belegung$Companion$Aktion$TOGGLESTUNDEN_getInstance() {
+    Belegung$Companion$Aktion_initFields();
+    return Belegung$Companion$Aktion$TOGGLESTUNDEN_instance;
+  }
   Belegung$Companion$Aktion.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'Aktion',
     interfaces: [Enum]
   };
   function Belegung$Companion$Aktion$values() {
-    return [Belegung$Companion$Aktion$NEU_getInstance(), Belegung$Companion$Aktion$LÖSCHE_getInstance(), Belegung$Companion$Aktion$TOGGLE_getInstance(), Belegung$Companion$Aktion$CHECK_getInstance(), Belegung$Companion$Aktion$TOGGLEMÜNDLICH_getInstance()];
+    return [Belegung$Companion$Aktion$NEU_getInstance(), Belegung$Companion$Aktion$LÖSCHE_getInstance(), Belegung$Companion$Aktion$TOGGLE_getInstance(), Belegung$Companion$Aktion$CHECK_getInstance(), Belegung$Companion$Aktion$TOGGLEMÜNDLICH_getInstance(), Belegung$Companion$Aktion$TOGGLESTUNDEN_getInstance()];
   }
   Belegung$Companion$Aktion.values = Belegung$Companion$Aktion$values;
   function Belegung$Companion$Aktion$valueOf(name) {
@@ -1173,15 +1214,19 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         return Belegung$Companion$Aktion$CHECK_getInstance();
       case 'TOGGLEM\xDCNDLICH':
         return Belegung$Companion$Aktion$TOGGLEMÜNDLICH_getInstance();
+      case 'TOGGLESTUNDEN':
+        return Belegung$Companion$Aktion$TOGGLESTUNDEN_getInstance();
       default:throwISE('No enum constant sample.Belegung.Companion.Aktion.' + name);
     }
   }
   Belegung$Companion$Aktion.valueOf_61zpoe$ = Belegung$Companion$Aktion$valueOf;
-  function Belegung$Companion$Belegfach(name, typ, aufgabenfeld, stunden, attribute) {
+  function Belegung$Companion$Belegfach(name, typ, aufgabenfeld, stunden, stundenAlternativ, alternativStunden, attribute) {
     this.name = name;
     this.typ = typ;
     this.aufgabenfeld = aufgabenfeld;
     this.stunden = stunden;
+    this.stundenAlternativ = stundenAlternativ;
+    this.alternativStunden = alternativStunden;
     this.attribute = attribute;
   }
   Belegung$Companion$Belegfach.$metadata$ = {
@@ -1202,13 +1247,19 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     return this.stunden;
   };
   Belegung$Companion$Belegfach.prototype.component5 = function () {
+    return this.stundenAlternativ;
+  };
+  Belegung$Companion$Belegfach.prototype.component6 = function () {
+    return this.alternativStunden;
+  };
+  Belegung$Companion$Belegfach.prototype.component7 = function () {
     return this.attribute;
   };
-  Belegung$Companion$Belegfach.prototype.copy_tfflif$ = function (name, typ, aufgabenfeld, stunden, attribute) {
-    return new Belegung$Companion$Belegfach(name === void 0 ? this.name : name, typ === void 0 ? this.typ : typ, aufgabenfeld === void 0 ? this.aufgabenfeld : aufgabenfeld, stunden === void 0 ? this.stunden : stunden, attribute === void 0 ? this.attribute : attribute);
+  Belegung$Companion$Belegfach.prototype.copy_3ojbng$ = function (name, typ, aufgabenfeld, stunden, stundenAlternativ, alternativStunden, attribute) {
+    return new Belegung$Companion$Belegfach(name === void 0 ? this.name : name, typ === void 0 ? this.typ : typ, aufgabenfeld === void 0 ? this.aufgabenfeld : aufgabenfeld, stunden === void 0 ? this.stunden : stunden, stundenAlternativ === void 0 ? this.stundenAlternativ : stundenAlternativ, alternativStunden === void 0 ? this.alternativStunden : alternativStunden, attribute === void 0 ? this.attribute : attribute);
   };
   Belegung$Companion$Belegfach.prototype.toString = function () {
-    return 'Belegfach(name=' + Kotlin.toString(this.name) + (', typ=' + Kotlin.toString(this.typ)) + (', aufgabenfeld=' + Kotlin.toString(this.aufgabenfeld)) + (', stunden=' + Kotlin.toString(this.stunden)) + (', attribute=' + Kotlin.toString(this.attribute)) + ')';
+    return 'Belegfach(name=' + Kotlin.toString(this.name) + (', typ=' + Kotlin.toString(this.typ)) + (', aufgabenfeld=' + Kotlin.toString(this.aufgabenfeld)) + (', stunden=' + Kotlin.toString(this.stunden)) + (', stundenAlternativ=' + Kotlin.toString(this.stundenAlternativ)) + (', alternativStunden=' + Kotlin.toString(this.alternativStunden)) + (', attribute=' + Kotlin.toString(this.attribute)) + ')';
   };
   Belegung$Companion$Belegfach.prototype.hashCode = function () {
     var result = 0;
@@ -1216,11 +1267,13 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     result = result * 31 + Kotlin.hashCode(this.typ) | 0;
     result = result * 31 + Kotlin.hashCode(this.aufgabenfeld) | 0;
     result = result * 31 + Kotlin.hashCode(this.stunden) | 0;
+    result = result * 31 + Kotlin.hashCode(this.stundenAlternativ) | 0;
+    result = result * 31 + Kotlin.hashCode(this.alternativStunden) | 0;
     result = result * 31 + Kotlin.hashCode(this.attribute) | 0;
     return result;
   };
   Belegung$Companion$Belegfach.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.typ, other.typ) && Kotlin.equals(this.aufgabenfeld, other.aufgabenfeld) && Kotlin.equals(this.stunden, other.stunden) && Kotlin.equals(this.attribute, other.attribute)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.typ, other.typ) && Kotlin.equals(this.aufgabenfeld, other.aufgabenfeld) && Kotlin.equals(this.stunden, other.stunden) && Kotlin.equals(this.stundenAlternativ, other.stundenAlternativ) && Kotlin.equals(this.alternativStunden, other.alternativStunden) && Kotlin.equals(this.attribute, other.attribute)))));
   };
   Object.defineProperty(Belegung$Companion.prototype, 'f\xE4cherauswahl', {
     get: function () {
@@ -1241,6 +1294,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       tmp$_0 = fach.stunden.size;
       for (var index = 0; index < tmp$_0; index++) {
         var stundenbelegung = ArrayList_init();
+        var stundenbelegungAlternativ = ArrayList_init();
         if (fach.stunden.get_za3lpa$(index) > 0) {
           for (var i = 0; i <= 3; i++) {
             stundenbelegung.add_11rb$(fach.stunden.get_za3lpa$(index));
@@ -1256,7 +1310,22 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
               break;
           }
           var art = tmp$_1;
-          liste.add_11rb$(new Belegung$Companion$Belegfach(fach.name, art, fach.aufgabenfeld, stundenbelegung, toMutableList(fach.attribute)));
+          if (fach.attribute.contains_11rb$(Fachattribute$Fremdsprache_getInstance()) && art === Belegung$Companion$Kursart$BF_getInstance()) {
+            stundenbelegungAlternativ = mutableListOf([4, 4, 4, 4]);
+            var attr2 = toMutableList(fach.attribute);
+            attr2.add_11rb$(Fachattribute$spätbeginnend_getInstance());
+            fach.attribute = toList(attr2);
+          }
+          if (fach.attribute.contains_11rb$(Fachattribute$GeGe_getInstance())) {
+            stundenbelegungAlternativ = mutableListOf([2, 0, 2, 0]);
+          }
+          if (fach.attribute.contains_11rb$(Fachattribute$Seminarfach_getInstance())) {
+            stundenbelegung = mutableListOf([3, 3, 0, 0]);
+          }
+          if (art === Belegung$Companion$Kursart$WF_getInstance()) {
+            stundenbelegungAlternativ = mutableListOf([2, 2, 0, 0]);
+          }
+          liste.add_11rb$(new Belegung$Companion$Belegfach(fach.name, art, fach.aufgabenfeld, stundenbelegung, stundenbelegungAlternativ, false, toMutableList(fach.attribute)));
         }
       }
     }
@@ -1298,6 +1367,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     Aufgabenfeld$II_instance = new Aufgabenfeld('II', 1);
     Aufgabenfeld$III_instance = new Aufgabenfeld('III', 2);
     Aufgabenfeld$Sport_instance = new Aufgabenfeld('Sport', 3);
+    Aufgabenfeld$Seminarfach_instance = new Aufgabenfeld('Seminarfach', 4);
   }
   var Aufgabenfeld$I_instance;
   function Aufgabenfeld$I_getInstance() {
@@ -1319,13 +1389,18 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     Aufgabenfeld_initFields();
     return Aufgabenfeld$Sport_instance;
   }
+  var Aufgabenfeld$Seminarfach_instance;
+  function Aufgabenfeld$Seminarfach_getInstance() {
+    Aufgabenfeld_initFields();
+    return Aufgabenfeld$Seminarfach_instance;
+  }
   Aufgabenfeld.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'Aufgabenfeld',
     interfaces: [Enum]
   };
   function Aufgabenfeld$values() {
-    return [Aufgabenfeld$I_getInstance(), Aufgabenfeld$II_getInstance(), Aufgabenfeld$III_getInstance(), Aufgabenfeld$Sport_getInstance()];
+    return [Aufgabenfeld$I_getInstance(), Aufgabenfeld$II_getInstance(), Aufgabenfeld$III_getInstance(), Aufgabenfeld$Sport_getInstance(), Aufgabenfeld$Seminarfach_getInstance()];
   }
   Aufgabenfeld.values = Aufgabenfeld$values;
   function Aufgabenfeld$valueOf(name) {
@@ -1338,6 +1413,8 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         return Aufgabenfeld$III_getInstance();
       case 'Sport':
         return Aufgabenfeld$Sport_getInstance();
+      case 'Seminarfach':
+        return Aufgabenfeld$Seminarfach_getInstance();
       default:throwISE('No enum constant sample.Aufgabenfeld.' + name);
     }
   }
@@ -1355,10 +1432,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     Fachattribute$Fremdsprache_instance = new Fachattribute('Fremdsprache', 2);
     Fachattribute$Mathematik_instance = new Fachattribute('Mathematik', 3);
     Fachattribute$kannNawiErsetzen_instance = new Fachattribute('kannNawiErsetzen', 4);
-    Fachattribute$GeGe_instance = new Fachattribute('GeGe', 5);
-    Fachattribute$mündlichePrüfung_instance = new Fachattribute('m\xFCndlichePr\xFCfung', 6);
-    Fachattribute$spätbeginnend_instance = new Fachattribute('sp\xE4tbeginnend', 7);
-    Fachattribute$Orchidee_instance = new Fachattribute('Orchidee', 8);
+    Fachattribute$Seminarfach_instance = new Fachattribute('Seminarfach', 5);
+    Fachattribute$GeGe_instance = new Fachattribute('GeGe', 6);
+    Fachattribute$mündlichePrüfung_instance = new Fachattribute('m\xFCndlichePr\xFCfung', 7);
+    Fachattribute$spätbeginnend_instance = new Fachattribute('sp\xE4tbeginnend', 8);
+    Fachattribute$Orchidee_instance = new Fachattribute('Orchidee', 9);
   }
   var Fachattribute$Naturwissenschaft_instance;
   function Fachattribute$Naturwissenschaft_getInstance() {
@@ -1384,6 +1462,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   function Fachattribute$kannNawiErsetzen_getInstance() {
     Fachattribute_initFields();
     return Fachattribute$kannNawiErsetzen_instance;
+  }
+  var Fachattribute$Seminarfach_instance;
+  function Fachattribute$Seminarfach_getInstance() {
+    Fachattribute_initFields();
+    return Fachattribute$Seminarfach_instance;
   }
   var Fachattribute$GeGe_instance;
   function Fachattribute$GeGe_getInstance() {
@@ -1411,7 +1494,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     interfaces: [Enum]
   };
   function Fachattribute$values() {
-    return [Fachattribute$Naturwissenschaft_getInstance(), Fachattribute$Deutsch_getInstance(), Fachattribute$Fremdsprache_getInstance(), Fachattribute$Mathematik_getInstance(), Fachattribute$kannNawiErsetzen_getInstance(), Fachattribute$GeGe_getInstance(), Fachattribute$mündlichePrüfung_getInstance(), Fachattribute$spätbeginnend_getInstance(), Fachattribute$Orchidee_getInstance()];
+    return [Fachattribute$Naturwissenschaft_getInstance(), Fachattribute$Deutsch_getInstance(), Fachattribute$Fremdsprache_getInstance(), Fachattribute$Mathematik_getInstance(), Fachattribute$kannNawiErsetzen_getInstance(), Fachattribute$Seminarfach_getInstance(), Fachattribute$GeGe_getInstance(), Fachattribute$mündlichePrüfung_getInstance(), Fachattribute$spätbeginnend_getInstance(), Fachattribute$Orchidee_getInstance()];
   }
   Fachattribute.values = Fachattribute$values;
   function Fachattribute$valueOf(name) {
@@ -1426,6 +1509,8 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         return Fachattribute$Mathematik_getInstance();
       case 'kannNawiErsetzen':
         return Fachattribute$kannNawiErsetzen_getInstance();
+      case 'Seminarfach':
+        return Fachattribute$Seminarfach_getInstance();
       case 'GeGe':
         return Fachattribute$GeGe_getInstance();
       case 'm\xFCndlichePr\xFCfung':
@@ -1617,12 +1702,46 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
+  function erstelleRaster$lambda$lambda$lambda$lambda_4(closure$gewählt, closure$zeile, closure$i) {
+    return function ($receiver) {
+      var klassen = LinkedHashSet_init();
+      if (Kotlin.isType(closure$gewählt, Belegung$Companion$Kursart)) {
+        if (closure$zeile.stunden.get_za3lpa$(closure$i) !== 0) {
+          $receiver.unaryPlus_pdl1vz$(closure$zeile.stunden.get_za3lpa$(closure$i).toString());
+          println('Stunden ' + closure$i + ' ' + closure$zeile.stunden.get_za3lpa$(closure$i));
+          if (closure$zeile.stundenAlternativVorhanden === true) {
+            klassen.add_11rb$('klickbar');
+            klassen.add_11rb$('stunden');
+            if (equals(closure$gewählt, Belegung$Companion$Kursart$BF_getInstance())) {
+              set_id($receiver, closure$zeile.name + '_stundenBF');
+            }
+             else if (equals(closure$gewählt, Belegung$Companion$Kursart$WF_getInstance())) {
+              set_id($receiver, closure$zeile.name + '_stundenWF');
+            }
+          }
+        }
+         else {
+          $receiver.unaryPlus_pdl1vz$(' ');
+        }
+      }
+       else {
+        $receiver.unaryPlus_pdl1vz$(' ');
+      }
+      set_classes($receiver, klassen);
+      return Unit;
+    };
+  }
   function erstelleRaster$lambda$lambda$lambda_0(closure$zeile) {
     return function ($receiver) {
+      var tmp$;
       td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_0(closure$zeile));
       td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_1(closure$zeile));
       td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_2(closure$zeile));
       td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_3(closure$zeile));
+      var gewählt = (tmp$ = closure$zeile.gewählt) != null ? tmp$ : '';
+      for (var i = 0; i <= 3; i++) {
+        td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_4(gewählt, closure$zeile, i));
+      }
       return Unit;
     };
   }
@@ -1643,7 +1762,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     };
   }
   var emptySet = Kotlin.kotlin.collections.emptySet_287e2$;
-  function erstelleRaster$lambda$lambda$lambda$lambda_4(closure$it) {
+  function erstelleRaster$lambda$lambda$lambda$lambda_5(closure$it) {
     return function ($receiver) {
       if (closure$it.kommentarart === Belegung$Kommentarart$SCHLECHT_getInstance()) {
         set_classes($receiver, setOf_0('rot'));
@@ -1665,7 +1784,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       tmp$ = meldungen.iterator();
       while (tmp$.hasNext()) {
         var element = tmp$.next();
-        div($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_4(element));
+        div($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_5(element));
       }
       return Unit;
     };
@@ -1735,6 +1854,10 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
           closure$aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$TOGGLE_getInstance(), [typEvent.get_za3lpa$(0), Belegung$Companion$Kursart$WF_getInstance()]);
           refresh = true;
         }
+         else if (startsWith(typEvent.get_za3lpa$(1), 'stunden')) {
+          closure$aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$TOGGLESTUNDEN_getInstance(), [typEvent.get_za3lpa$(0), equals(typEvent.get_za3lpa$(1).substring(7), 'BF') ? Belegung$Companion$Kursart$BF_getInstance() : Belegung$Companion$Kursart$WF_getInstance()]);
+          refresh = true;
+        }
       }
       if (refresh === true) {
         erstelleRaster(closure$aktuelleBelegung);
@@ -1761,17 +1884,17 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     tmp$ = belegung.iterator();
     while (tmp$.hasNext()) {
       var element = tmp$.next();
-      var tmp$_0, tmp$_1, tmp$_2;
+      var tmp$_0, tmp$_1, tmp$_2, tmp$_3;
       var id = element.name + '_' + toString(element.typ);
       var id_mündlich = element.name + '_m' + (element.typ === Belegung$Companion$Kursart$BF_getInstance() ? 'BF' : element.typ === Belegung$Companion$Kursart$WF_getInstance() ? 'WF' : '');
       var typ = element.typ;
       var zelle = document.getElementById(id);
       var $receiver = aktuelleBelegung.getBelegung();
       var destination = ArrayList_init();
-      var tmp$_3;
-      tmp$_3 = $receiver.iterator();
-      while (tmp$_3.hasNext()) {
-        var element_0 = tmp$_3.next();
+      var tmp$_4;
+      tmp$_4 = $receiver.iterator();
+      while (tmp$_4.hasNext()) {
+        var element_0 = tmp$_4.next();
         if (element_0.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance()))
           destination.add_11rb$(element_0);
       }
@@ -1790,6 +1913,9 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       }
       if (element.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
         (tmp$_2 = document.getElementById(id_mündlich)) != null ? (tmp$_2.innerHTML = 'X') : null;
+      }
+       else {
+        (tmp$_3 = document.getElementById(id_mündlich)) != null ? (tmp$_3.innerHTML = ' ') : null;
       }
     }
   }
@@ -1850,6 +1976,9 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   Object.defineProperty(Belegung$Companion$Aktion, 'TOGGLEM\xDCNDLICH', {
     get: Belegung$Companion$Aktion$TOGGLEMÜNDLICH_getInstance
   });
+  Object.defineProperty(Belegung$Companion$Aktion, 'TOGGLESTUNDEN', {
+    get: Belegung$Companion$Aktion$TOGGLESTUNDEN_getInstance
+  });
   Belegung$Companion.prototype.Aktion = Belegung$Companion$Aktion;
   Belegung$Companion.prototype.Belegfach = Belegung$Companion$Belegfach;
   Object.defineProperty(Belegung, 'Companion', {
@@ -1868,6 +1997,9 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   Object.defineProperty(Aufgabenfeld, 'Sport', {
     get: Aufgabenfeld$Sport_getInstance
   });
+  Object.defineProperty(Aufgabenfeld, 'Seminarfach', {
+    get: Aufgabenfeld$Seminarfach_getInstance
+  });
   package$sample.Aufgabenfeld = Aufgabenfeld;
   Object.defineProperty(Fachattribute, 'Naturwissenschaft', {
     get: Fachattribute$Naturwissenschaft_getInstance
@@ -1883,6 +2015,9 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   });
   Object.defineProperty(Fachattribute, 'kannNawiErsetzen', {
     get: Fachattribute$kannNawiErsetzen_getInstance
+  });
+  Object.defineProperty(Fachattribute, 'Seminarfach', {
+    get: Fachattribute$Seminarfach_getInstance
   });
   Object.defineProperty(Fachattribute, 'GeGe', {
     get: Fachattribute$GeGe_getInstance
