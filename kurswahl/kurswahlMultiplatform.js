@@ -709,7 +709,17 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         var item_0 = tmp$_2.next();
         destination_2.add_11rb$(Belegung$Companion_getInstance().Text.get_11rb$(item_0));
       }
-      println('Die folgenden Aufgabenfelder sind noch nicht abgedeckt: ' + joinToString(destination_2, ','));
+      println('Die folgenden Aufgabenfelder sind noch nicht in der Abiturpr\xFCfung abgedeckt: ' + joinToString(destination_2, ','));
+      var tmp$_3 = Belegung$Companion_getInstance().fehlerMeldungen;
+      var tmp$_4 = Belegung$Kommentarart$SCHLECHT_getInstance();
+      var destination_3 = ArrayList_init_0(collectionSizeOrDefault(fehlendeBereiche, 10));
+      var tmp$_5;
+      tmp$_5 = fehlendeBereiche.iterator();
+      while (tmp$_5.hasNext()) {
+        var item_1 = tmp$_5.next();
+        destination_3.add_11rb$(Belegung$Companion_getInstance().Text.get_11rb$(item_1));
+      }
+      tmp$_3.add_11rb$(new Belegung$Kommentar(tmp$_4, 'Die folgenden Aufgabenfelder sind noch nicht in der Abiturpr\xFCfung abgedeckt: ' + joinToString(destination_3, ',')));
     }
     return rueckgabe;
   };
