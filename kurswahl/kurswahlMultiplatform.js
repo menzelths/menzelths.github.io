@@ -14,6 +14,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   var Enum = Kotlin.kotlin.Enum;
   var throwISE = Kotlin.throwISE;
   var equals = Kotlin.equals;
+  var firstOrNull = Kotlin.kotlin.collections.firstOrNull_2p1efm$;
   var toList = Kotlin.kotlin.collections.toList_7wnvza$;
   var throwUPAE = Kotlin.throwUPAE;
   var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
@@ -25,9 +26,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   var flatten = Kotlin.kotlin.collections.flatten_u0ad8z$;
   var Unit = Kotlin.kotlin.Unit;
   var throwCCE = Kotlin.throwCCE;
-  var firstOrNull = Kotlin.kotlin.collections.firstOrNull_2p1efm$;
   var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
-  var ensureNotNull = Kotlin.ensureNotNull;
   var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var to = Kotlin.kotlin.to_ujzrz7$;
@@ -42,6 +41,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   var table = $module$kotlinx_html_js.kotlinx.html.table_dmqmme$;
   var div = $module$kotlinx_html_js.kotlinx.html.div_ri36nr$;
   var div_0 = $module$kotlinx_html_js.kotlinx.html.js.div_wkomt5$;
+  var ensureNotNull = Kotlin.ensureNotNull;
   var append = $module$kotlinx_html_js.kotlinx.html.dom.append_k9bwru$;
   var split = Kotlin.kotlin.text.split_ip8yn$;
   var startsWith = Kotlin.kotlin.text.startsWith_7epoxm$;
@@ -329,6 +329,47 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     return destination_0.size > 0;
   };
+  Belegung.prototype.alleHalbjahreBelegt_0 = function (fach, typ) {
+    var $receiver = this.aktuelleBelegung_0;
+    var destination = ArrayList_init();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (equals(element.name, fach) && element.typ === typ)
+        destination.add_11rb$(element);
+    }
+    var fach_0 = firstOrNull(destination);
+    if (fach_0 != null) {
+      if (fach_0.alternativStunden) {
+        var $receiver_0 = fach_0.stundenAlternativ;
+        var destination_0 = ArrayList_init();
+        var tmp$_0;
+        tmp$_0 = $receiver_0.iterator();
+        while (tmp$_0.hasNext()) {
+          var element_0 = tmp$_0.next();
+          if (element_0 !== 0)
+            destination_0.add_11rb$(element_0);
+        }
+        return destination_0.size === 4;
+      }
+       else {
+        var $receiver_1 = fach_0.stunden;
+        var destination_1 = ArrayList_init();
+        var tmp$_1;
+        tmp$_1 = $receiver_1.iterator();
+        while (tmp$_1.hasNext()) {
+          var element_1 = tmp$_1.next();
+          if (element_1 !== 0)
+            destination_1.add_11rb$(element_1);
+        }
+        return destination_1.size === 4;
+      }
+    }
+     else {
+      return false;
+    }
+  };
   Belegung.prototype.holeFehler = function () {
     this.action_4t1mlb$(Belegung$Companion$Aktion$CHECK_getInstance(), []);
     return toList(Belegung$Companion_getInstance().fehlerMeldungen);
@@ -430,7 +471,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
           }
           if (v.typ === Belegung$Companion$Kursart$BF_getInstance() || v.typ === Belegung$Companion$Kursart$WF_getInstance()) {
             klickbarWahl.add_11rb$(v.typ);
-            if (this.anzahlMündlichePrüfungen_0() < 2 && this.fachAlsBasisfachOderWahlfachGewählt_0(v.name)) {
+            if (this.anzahlMündlichePrüfungen_0() < 2 && this.fachAlsBasisfachOderWahlfachGewählt_0(v.name) && this.alleHalbjahreBelegt_0(v.name, v.typ)) {
               mündlichKlickbar = true;
             }
             if (v.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
@@ -974,7 +1015,26 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         }
 
         var fach_0 = firstOrNull(destination_0);
-        fach_0 != null ? (fach_0.alternativStunden = !ensureNotNull(fach_0).alternativStunden) : null;
+        if (fach_0 != null) {
+          fach_0.alternativStunden = !fach_0.alternativStunden;
+          var tmp$_10 = fach_0.alternativStunden;
+          if (tmp$_10) {
+            var $receiver_1 = fach_0.stundenAlternativ;
+            var destination_1 = ArrayList_init();
+            var tmp$_11;
+            tmp$_11 = $receiver_1.iterator();
+            while (tmp$_11.hasNext()) {
+              var element_1 = tmp$_11.next();
+              if (element_1 > 0)
+                destination_1.add_11rb$(element_1);
+            }
+            tmp$_10 = destination_1.size < 4;
+          }
+          if (tmp$_10) {
+            fach_0.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+          }
+        }
+
         break loop_label;
       case 'CHECK':
         Belegung$Companion_getInstance().fehlerMeldungen = ArrayList_init();
@@ -989,25 +1049,25 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       case 'TOGGLEM\xDCNDLICH':
         var name_2 = typeof (tmp$_4 = parameter[0]) === 'string' ? tmp$_4 : throwCCE();
         var typ_1 = Kotlin.isType(tmp$_5 = parameter[1], Belegung$Companion$Kursart) ? tmp$_5 : throwCCE();
-        var $receiver_1 = this.aktuelleBelegung_0;
-        var destination_1 = ArrayList_init();
-        var tmp$_10;
-        tmp$_10 = $receiver_1.iterator();
-        while (tmp$_10.hasNext()) {
-          var element_1 = tmp$_10.next();
-          if (element_1.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance()))
-            destination_1.add_11rb$(element_1);
+        var $receiver_2 = this.aktuelleBelegung_0;
+        var destination_2 = ArrayList_init();
+        var tmp$_12;
+        tmp$_12 = $receiver_2.iterator();
+        while (tmp$_12.hasNext()) {
+          var element_2 = tmp$_12.next();
+          if (element_2.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance()))
+            destination_2.add_11rb$(element_2);
         }
 
-        var anzahlPrüfungsfächer = destination_1.size;
-        var $receiver_2 = this.aktuelleBelegung_0;
+        var anzahlPrüfungsfächer = destination_2.size;
+        var $receiver_3 = this.aktuelleBelegung_0;
         var indexOfFirst$result;
         indexOfFirst$break: do {
-          var tmp$_11;
+          var tmp$_13;
           var index = 0;
-          tmp$_11 = $receiver_2.iterator();
-          while (tmp$_11.hasNext()) {
-            var item = tmp$_11.next();
+          tmp$_13 = $receiver_3.iterator();
+          while (tmp$_13.hasNext()) {
+            var item = tmp$_13.next();
             if (equals(item.name, name_2) && item.typ === typ_1) {
               indexOfFirst$result = index;
               break indexOfFirst$break;
@@ -1019,13 +1079,13 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
          while (false);
         var schriftlichIndex = indexOfFirst$result;
         if (schriftlichIndex >= 0) {
-          var $receiver_3 = this.aktuelleBelegung_0.get_za3lpa$(schriftlichIndex).attribute;
-          if ($receiver_3.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
-            $receiver_3.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+          var $receiver_4 = this.aktuelleBelegung_0.get_za3lpa$(schriftlichIndex).attribute;
+          if ($receiver_4.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
+            $receiver_4.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
           }
            else {
             if (anzahlPrüfungsfächer < 2) {
-              $receiver_3.add_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+              $receiver_4.add_11rb$(Fachattribute$mündlichePrüfung_getInstance());
             }
              else {
               Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'maximal drei m\xFCndliche Pr\xFCfungsf\xE4cher erlaubt'));
@@ -1038,52 +1098,71 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       case 'TOGGLE':
         var name_3 = typeof (tmp$_6 = parameter[0]) === 'string' ? tmp$_6 : throwCCE();
         var typ_2 = Kotlin.isType(tmp$_7 = parameter[1], Belegung$Companion$Kursart) ? tmp$_7 : throwCCE();
-        var $receiver_4 = Belegung$Companion_getInstance().fächerauswahl;
-        var destination_2 = ArrayList_init();
-        var tmp$_12;
-        tmp$_12 = $receiver_4.iterator();
-        while (tmp$_12.hasNext()) {
-          var element_2 = tmp$_12.next();
-          if (equals(element_2.name, name_3) && element_2.typ === typ_2)
-            destination_2.add_11rb$(element_2);
+        var $receiver_5 = Belegung$Companion_getInstance().fächerauswahl;
+        var destination_3 = ArrayList_init();
+        var tmp$_14;
+        tmp$_14 = $receiver_5.iterator();
+        while (tmp$_14.hasNext()) {
+          var element_3 = tmp$_14.next();
+          if (equals(element_3.name, name_3) && element_3.typ === typ_2)
+            destination_3.add_11rb$(element_3);
         }
 
-        var fach_1 = firstOrNull(destination_2);
+        var fach_1 = firstOrNull(destination_3);
         if (fach_1 != null) {
-          var $receiver_5 = this.aktuelleBelegung_0;
-          if ($receiver_5.contains_11rb$(fach_1)) {
+          var $receiver_6 = this.aktuelleBelegung_0;
+          if ($receiver_6.contains_11rb$(fach_1)) {
             fach_1.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
-            removeAll($receiver_5, Belegung$action$lambda$lambda(name_3));
-          }
-           else {
-            var destination_3 = ArrayList_init_0(collectionSizeOrDefault($receiver_5, 10));
-            var tmp$_13;
-            tmp$_13 = $receiver_5.iterator();
-            while (tmp$_13.hasNext()) {
-              var item_0 = tmp$_13.next();
-              destination_3.add_11rb$(item_0.name);
-            }
-            if (destination_3.contains_11rb$(name_3)) {
-              var $receiver_6 = Belegung$Companion_getInstance().fächerauswahl;
+            removeAll($receiver_6, Belegung$action$lambda$lambda(name_3));
+            if (equals(fach_1.name, 'Wirtschaft') && fach_1.typ === Belegung$Companion$Kursart$LF_getInstance()) {
+              var $receiver_7 = Belegung$Companion_getInstance().fächerauswahl;
               var destination_4 = ArrayList_init();
-              var tmp$_14;
-              tmp$_14 = $receiver_6.iterator();
-              while (tmp$_14.hasNext()) {
-                var element_3 = tmp$_14.next();
-                if (equals(element_3.name, name_3))
-                  destination_4.add_11rb$(element_3);
-              }
               var tmp$_15;
-              tmp$_15 = destination_4.iterator();
+              tmp$_15 = $receiver_7.iterator();
               while (tmp$_15.hasNext()) {
                 var element_4 = tmp$_15.next();
-                element_4.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+                if (element_4.attribute.contains_11rb$(Fachattribute$GeGe_getInstance()))
+                  destination_4.add_11rb$(element_4);
               }
-              removeAll($receiver_5, Belegung$action$lambda$lambda_0(name_3));
-              $receiver_5.add_11rb$(fach_1);
+              var gege = firstOrNull(destination_4);
+              if (gege != null) {
+                gege.alternativStunden = false;
+                gege.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+              }
+            }
+            fach_1.alternativStunden = false;
+          }
+           else {
+            var destination_5 = ArrayList_init_0(collectionSizeOrDefault($receiver_6, 10));
+            var tmp$_16;
+            tmp$_16 = $receiver_6.iterator();
+            while (tmp$_16.hasNext()) {
+              var item_0 = tmp$_16.next();
+              destination_5.add_11rb$(item_0.name);
+            }
+            if (destination_5.contains_11rb$(name_3)) {
+              var $receiver_8 = Belegung$Companion_getInstance().fächerauswahl;
+              var destination_6 = ArrayList_init();
+              var tmp$_17;
+              tmp$_17 = $receiver_8.iterator();
+              while (tmp$_17.hasNext()) {
+                var element_5 = tmp$_17.next();
+                if (equals(element_5.name, name_3))
+                  destination_6.add_11rb$(element_5);
+              }
+              var tmp$_18;
+              tmp$_18 = destination_6.iterator();
+              while (tmp$_18.hasNext()) {
+                var element_6 = tmp$_18.next();
+                element_6.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+              }
+              removeAll($receiver_6, Belegung$action$lambda$lambda_0(name_3));
+              fach_1.alternativStunden = false;
+              $receiver_6.add_11rb$(fach_1);
             }
              else {
-              $receiver_5.add_11rb$(fach_1);
+              $receiver_6.add_11rb$(fach_1);
+              fach_1.alternativStunden = false;
             }
           }
         }
