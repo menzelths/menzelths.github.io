@@ -499,7 +499,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
             if (v.attribute.contains_11rb$(Fachattribute$spätbeginnend_getInstance())) {
               stundenAlternativVorhanden = true;
             }
-            if (equals(v.name, 'Geographie/Gemeinschaftskunde')) {
+            if (v.attribute.contains_11rb$(Fachattribute$GeGe_getInstance())) {
               var $receiver_1 = this.aktuelleBelegung_0;
               var destination_1 = ArrayList_init();
               var tmp$_4;
@@ -797,7 +797,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     tmp$_2 = $receiver.iterator();
     while (tmp$_2.hasNext()) {
       var element_0 = tmp$_2.next();
-      if (equals(element_0.name, 'Geographie/Gemeinschaftskunde'))
+      if (element_0.attribute.contains_11rb$(Fachattribute$GeGe_getInstance()))
         destination_0.add_11rb$(element_0);
     }
     tmp$_1.add_11rb$(destination_0.size);
@@ -932,12 +932,12 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     var leistungsfächer = destination;
     var rückgabe = false;
     if (leistungsfächer.size < 3) {
-      println('zu wenige Leistungsf\xE4cher gew\xE4hlt');
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'zu wenige Leistungsf\xE4cher gew\xE4hlt'));
+      println('Zu wenige Leistungsf\xE4cher gew\xE4hlt!');
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Zu wenige Leistungsf\xE4cher gew\xE4hlt!'));
     }
      else if (leistungsfächer.size > 3) {
-      println('zu viele Leistungsf\xE4cher gew\xE4hlt');
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'zu viele Leistungsf\xE4cher gew\xE4hlt'));
+      println('Zu viele Leistungsf\xE4cher gew\xE4hlt!');
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Zu viele Leistungsf\xE4cher gew\xE4hlt!'));
     }
      else {
       var destination_0 = LinkedHashMap_init();
@@ -1166,8 +1166,8 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
               $receiver_4.add_11rb$(Fachattribute$mündlichePrüfung_getInstance());
             }
              else {
-              Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'maximal drei m\xFCndliche Pr\xFCfungsf\xE4cher erlaubt'));
-              println('maximal drei m\xFCndliche Pr\xFCfungsf\xE4cher erlaubt');
+              Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Maximal drei m\xFCndliche Pr\xFCfungsf\xE4cher erlaubt.'));
+              println('Maximal drei m\xFCndliche Pr\xFCfungsf\xE4cher erlaubt.');
             }
           }
         }
@@ -1738,7 +1738,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     fächer.add_11rb$(new Fach('Geschichte', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Geographie', Aufgabenfeld$II_getInstance(), listOf([5, 0, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Gemeinschaftskunde', Aufgabenfeld$II_getInstance(), listOf([5, 0, 0]), emptyList()));
-    fächer.add_11rb$(new Fach('Geographie/Gemeinschaftskunde', Aufgabenfeld$II_getInstance(), listOf([0, 2, 0]), listOf_0(Fachattribute$GeGe_getInstance())));
+    fächer.add_11rb$(new Fach('Geo/Gk', Aufgabenfeld$II_getInstance(), listOf([0, 2, 0]), listOf_0(Fachattribute$GeGe_getInstance())));
     fächer.add_11rb$(new Fach('Religionslehre', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Ethik', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Wirtschaft', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
