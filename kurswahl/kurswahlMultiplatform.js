@@ -13,21 +13,21 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   var Kind_CLASS = Kotlin.Kind.CLASS;
   var Enum = Kotlin.kotlin.Enum;
   var throwISE = Kotlin.throwISE;
-  var equals = Kotlin.equals;
   var firstOrNull = Kotlin.kotlin.collections.firstOrNull_2p1efm$;
+  var equals = Kotlin.equals;
   var toList = Kotlin.kotlin.collections.toList_7wnvza$;
+  var Unit = Kotlin.kotlin.Unit;
   var throwUPAE = Kotlin.throwUPAE;
   var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
   var print = Kotlin.kotlin.io.print_s8jyv4$;
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
   var setOf = Kotlin.kotlin.collections.setOf_i5x0yv$;
   var minus = Kotlin.kotlin.collections.minus_khz7k3$;
+  var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var sum = Kotlin.kotlin.collections.sum_plj8ka$;
   var flatten = Kotlin.kotlin.collections.flatten_u0ad8z$;
-  var Unit = Kotlin.kotlin.Unit;
   var throwCCE = Kotlin.throwCCE;
   var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
-  var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var hashMapOf = Kotlin.kotlin.collections.hashMapOf_qfcya0$;
@@ -50,6 +50,8 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   Belegung$Überschrift.prototype.constructor = Belegung$Überschrift;
   Belegung$Kommentarart.prototype = Object.create(Enum.prototype);
   Belegung$Kommentarart.prototype.constructor = Belegung$Kommentarart;
+  Belegung$Summe.prototype = Object.create(Belegung$Zeile.prototype);
+  Belegung$Summe.prototype.constructor = Belegung$Summe;
   Belegung$Kommentar.prototype = Object.create(Belegung$Zeile.prototype);
   Belegung$Kommentar.prototype.constructor = Belegung$Kommentar;
   Belegung$ZeileDarstellung.prototype = Object.create(Belegung$Zeile.prototype);
@@ -193,6 +195,32 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     }
   }
   Belegung$Kommentarart.valueOf_61zpoe$ = Belegung$Kommentarart$valueOf;
+  function Belegung$Summe(stunden) {
+    Belegung$Zeile.call(this);
+    this.stunden = stunden;
+  }
+  Belegung$Summe.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Summe',
+    interfaces: [Belegung$Zeile]
+  };
+  Belegung$Summe.prototype.component1 = function () {
+    return this.stunden;
+  };
+  Belegung$Summe.prototype.copy_pqoyrt$ = function (stunden) {
+    return new Belegung$Summe(stunden === void 0 ? this.stunden : stunden);
+  };
+  Belegung$Summe.prototype.toString = function () {
+    return 'Summe(stunden=' + Kotlin.toString(this.stunden) + ')';
+  };
+  Belegung$Summe.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.stunden) | 0;
+    return result;
+  };
+  Belegung$Summe.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && Kotlin.equals(this.stunden, other.stunden))));
+  };
   function Belegung$Kommentar(kommentarart, text) {
     Belegung$Zeile.call(this);
     this.kommentarart = kommentarart;
@@ -308,6 +336,22 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         destination.add_11rb$(element);
     }
     return destination.size;
+  };
+  Belegung.prototype.seminarFachGewählt_0 = function () {
+    var $receiver = this.aktuelleBelegung_0;
+    var destination = ArrayList_init();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (element.attribute.contains_11rb$(Fachattribute$Seminarfach_getInstance()))
+        destination.add_11rb$(element);
+    }
+    var sf = firstOrNull(destination);
+    if (sf != null) {
+      return sf.aufgabenfeld;
+    }
+    return null;
   };
   Belegung.prototype.fachAlsBasisfachOderWahlfachGewählt_0 = function (fach) {
     var $receiver = this.aktuelleBelegung_0;
@@ -441,11 +485,12 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         tmp$_1 = varianten.iterator();
         while (tmp$_1.hasNext()) {
           var v = tmp$_1.next();
-          if (this.anzahlLeistungsfächer_0() < 3 && !v.attribute.contains_11rb$(Fachattribute$Orchidee_getInstance())) {
+          if (this.anzahlLeistungsfächer_0() < 3 && !v.attribute.contains_11rb$(Fachattribute$Orchidee_getInstance()) && !v.attribute.contains_11rb$(Fachattribute$Seminarfach_getInstance()) && !v.attribute.contains_11rb$(Fachattribute$GeGe_getInstance())) {
             klickbarWahl.add_11rb$(Belegung$Companion$Kursart$LF_getInstance());
           }
           if (this.aktuelleBelegung_0.contains_11rb$(v)) {
             gewählt = v.typ;
+            v.attribute.contains_11rb$(Fachattribute$Seminarfach_getInstance());
             klickbarWahl.add_11rb$(v.typ);
             stunden = v.alternativStunden === false ? v.stunden : v.stundenAlternativ;
             if (v.typ === Belegung$Companion$Kursart$WF_getInstance()) {
@@ -470,7 +515,15 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
             }
           }
           if (v.typ === Belegung$Companion$Kursart$BF_getInstance() || v.typ === Belegung$Companion$Kursart$WF_getInstance()) {
-            klickbarWahl.add_11rb$(v.typ);
+            if (v.attribute.contains_11rb$(Fachattribute$Seminarfach_getInstance()) && equals(this.seminarFachGewählt_0(), v.aufgabenfeld)) {
+              klickbarWahl.add_11rb$(v.typ);
+            }
+             else if (v.attribute.contains_11rb$(Fachattribute$Seminarfach_getInstance()) && this.seminarFachGewählt_0() != null && !equals(this.seminarFachGewählt_0(), v.aufgabenfeld)) {
+              klickbarWahl.remove_11rb$(v.typ);
+            }
+             else {
+              klickbarWahl.add_11rb$(v.typ);
+            }
             if (this.anzahlMündlichePrüfungen_0() < 2 && this.fachAlsBasisfachOderWahlfachGewählt_0(v.name) && this.alleHalbjahreBelegt_0(v.name, v.typ)) {
               mündlichKlickbar = true;
             }
@@ -483,6 +536,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         text.add_11rb$(new Belegung$ZeileDarstellung(name == null ? throwUPAE('name') : name, aufgabenfeld, gewählt, klickbarWahl, mündlich, mündlichKlickbar, stunden, stundenAlternativVorhanden));
       }
     }
+    text.add_11rb$(new Belegung$Summe(this.holeWochenStunden_0()));
     return toList(text);
   };
   Belegung.prototype.getBelegung = function () {
@@ -832,6 +886,20 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es m\xFCssen mindestens 42 Kurse gew\xE4hlt werden'));
     }
     return kurssumme >= 42;
+  };
+  Belegung.prototype.holeWochenStunden_0 = function () {
+    var tmp$;
+    var stundensumme = mutableListOf([0, 0, 0, 0]);
+    var zeilenStunden = ArrayList_init();
+    tmp$ = this.aktuelleBelegung_0.iterator();
+    while (tmp$.hasNext()) {
+      var fach = tmp$.next();
+      zeilenStunden = fach.alternativStunden === false ? fach.stunden : fach.stundenAlternativ;
+      for (var i = 0; i <= 3; i++) {
+        stundensumme.set_wxm5ur$(i, stundensumme.get_za3lpa$(i) + zeilenStunden.get_za3lpa$(i) | 0);
+      }
+    }
+    return toList(stundensumme);
   };
   Belegung.prototype.testeMindestens32Wochenstunden_0 = function () {
     var tmp$;
@@ -1692,6 +1760,9 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     fächer.add_11rb$(new Fach('Probleml\xF6sen mit CAS', Aufgabenfeld$III_getInstance(), listOf([0, 0, 2]), listOf_0(Fachattribute$Orchidee_getInstance())));
     fächer.add_11rb$(new Fach('Darstellende Geometrie', Aufgabenfeld$III_getInstance(), listOf([0, 0, 2]), listOf_0(Fachattribute$Orchidee_getInstance())));
     fächer.add_11rb$(new Fach('Geologie', Aufgabenfeld$III_getInstance(), listOf([0, 0, 2]), listOf_0(Fachattribute$Orchidee_getInstance())));
+    fächer.add_11rb$(new Fach('Seminarfach I', Aufgabenfeld$I_getInstance(), listOf([0, 3, 0]), listOf_0(Fachattribute$Seminarfach_getInstance())));
+    fächer.add_11rb$(new Fach('Seminarfach II', Aufgabenfeld$II_getInstance(), listOf([0, 3, 0]), listOf_0(Fachattribute$Seminarfach_getInstance())));
+    fächer.add_11rb$(new Fach('Seminarfach III', Aufgabenfeld$III_getInstance(), listOf([0, 3, 0]), listOf_0(Fachattribute$Seminarfach_getInstance())));
     Belegung$Companion_getInstance().generiereFächer_n5lu7h$(fächer);
     var aktuelleBelegung = new Belegung('Belegung 1');
     aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Mathematik', Belegung$Companion$Kursart$LF_getInstance()]);
@@ -1721,19 +1792,52 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
+  function erstelleRaster$lambda$lambda$lambda$lambda_0($receiver) {
+    return Unit;
+  }
   function erstelleRaster$lambda$lambda$lambda(closure$zeile) {
     return function ($receiver) {
       td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda(closure$zeile));
+      for (var i = 0; i <= 5; i++) {
+        td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_0);
+      }
       return Unit;
     };
   }
-  function erstelleRaster$lambda$lambda$lambda$lambda_0(closure$zeile) {
+  function erstelleRaster$lambda$lambda$lambda$lambda_1($receiver) {
+    set_classes($receiver, setOf_0('fett'));
+    $receiver.unaryPlus_pdl1vz$('Wochenstunden');
+    return Unit;
+  }
+  function erstelleRaster$lambda$lambda$lambda$lambda_2($receiver) {
+    return Unit;
+  }
+  function erstelleRaster$lambda$lambda$lambda$lambda_3(closure$zeile, closure$i) {
+    return function ($receiver) {
+      $receiver.unaryPlus_pdl1vz$(closure$zeile.stunden.get_za3lpa$(closure$i).toString());
+      set_classes($receiver, setOf_0('fett'));
+      return Unit;
+    };
+  }
+  function erstelleRaster$lambda$lambda$lambda_0(closure$zeile) {
+    return function ($receiver) {
+      td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_1);
+      for (var i = 0; i <= 2; i++) {
+        td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_2);
+      }
+      for (var i_0 = 0; i_0 <= 3; i_0++) {
+        td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_3(closure$zeile, i_0));
+      }
+      return Unit;
+    };
+  }
+  function erstelleRaster$lambda$lambda$lambda$lambda_4(closure$zeile) {
     return function ($receiver) {
       $receiver.unaryPlus_pdl1vz$(closure$zeile.name);
       return Unit;
     };
   }
-  function erstelleRaster$lambda$lambda$lambda$lambda_1(closure$zeile) {
+  function erstelleRaster$lambda$lambda$lambda$lambda_5(closure$zeile) {
     return function ($receiver) {
       var klassen = LinkedHashSet_init();
       if (closure$zeile.klickbar.contains_11rb$(Belegung$Companion$Kursart$LF_getInstance())) {
@@ -1748,7 +1852,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
-  function erstelleRaster$lambda$lambda$lambda$lambda_2(closure$zeile) {
+  function erstelleRaster$lambda$lambda$lambda$lambda_6(closure$zeile) {
     return function ($receiver) {
       var klassen = LinkedHashSet_init();
       if (closure$zeile.klickbar.contains_11rb$(Belegung$Companion$Kursart$BF_getInstance())) {
@@ -1771,7 +1875,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
-  function erstelleRaster$lambda$lambda$lambda$lambda_3(closure$zeile) {
+  function erstelleRaster$lambda$lambda$lambda$lambda_7(closure$zeile) {
     return function ($receiver) {
       var tmp$;
       var klassen = LinkedHashSet_init();
@@ -1791,7 +1895,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
-  function erstelleRaster$lambda$lambda$lambda$lambda_4(closure$gewählt, closure$zeile, closure$i) {
+  function erstelleRaster$lambda$lambda$lambda$lambda_8(closure$gewählt, closure$zeile, closure$i) {
     return function ($receiver) {
       var klassen = LinkedHashSet_init();
       if (Kotlin.isType(closure$gewählt, Belegung$Companion$Kursart)) {
@@ -1820,16 +1924,16 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
-  function erstelleRaster$lambda$lambda$lambda_0(closure$zeile) {
+  function erstelleRaster$lambda$lambda$lambda_1(closure$zeile) {
     return function ($receiver) {
       var tmp$;
-      td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_0(closure$zeile));
-      td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_1(closure$zeile));
-      td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_2(closure$zeile));
-      td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_3(closure$zeile));
+      td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_4(closure$zeile));
+      td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_5(closure$zeile));
+      td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_6(closure$zeile));
+      td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_7(closure$zeile));
       var gewählt = (tmp$ = closure$zeile.gewählt) != null ? tmp$ : '';
       for (var i = 0; i <= 3; i++) {
-        td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_4(gewählt, closure$zeile, i));
+        td($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_8(gewählt, closure$zeile, i));
       }
       return Unit;
     };
@@ -1843,15 +1947,18 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         if (Kotlin.isType(zeile, Belegung$Überschrift)) {
           tr($receiver, void 0, erstelleRaster$lambda$lambda$lambda(zeile));
         }
-         else if (Kotlin.isType(zeile, Belegung$ZeileDarstellung)) {
+         else if (Kotlin.isType(zeile, Belegung$Summe)) {
           tr($receiver, void 0, erstelleRaster$lambda$lambda$lambda_0(zeile));
+        }
+         else if (Kotlin.isType(zeile, Belegung$ZeileDarstellung)) {
+          tr($receiver, void 0, erstelleRaster$lambda$lambda$lambda_1(zeile));
         }
       }
       return Unit;
     };
   }
   var emptySet = Kotlin.kotlin.collections.emptySet_287e2$;
-  function erstelleRaster$lambda$lambda$lambda$lambda_5(closure$it) {
+  function erstelleRaster$lambda$lambda$lambda$lambda_9(closure$it) {
     return function ($receiver) {
       if (closure$it.kommentarart === Belegung$Kommentarart$SCHLECHT_getInstance()) {
         set_classes($receiver, setOf_0('rot'));
@@ -1873,7 +1980,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       tmp$ = meldungen.iterator();
       while (tmp$.hasNext()) {
         var element = tmp$.next();
-        div($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_5(element));
+        div($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_9(element));
       }
       return Unit;
     };
@@ -2038,6 +2145,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     get: Belegung$Kommentarart$NEUTRAL_getInstance
   });
   Belegung.Kommentarart = Belegung$Kommentarart;
+  Belegung.Summe = Belegung$Summe;
   Belegung.Kommentar = Belegung$Kommentar;
   Belegung.ZeileDarstellung = Belegung$ZeileDarstellung;
   Object.defineProperty(Belegung$Companion$Kursart, 'LF', {
