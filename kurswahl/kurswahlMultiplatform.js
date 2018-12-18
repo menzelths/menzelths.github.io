@@ -17,15 +17,16 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   var equals = Kotlin.equals;
   var toList = Kotlin.kotlin.collections.toList_7wnvza$;
   var Unit = Kotlin.kotlin.Unit;
+  var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var throwUPAE = Kotlin.throwUPAE;
   var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
   var print = Kotlin.kotlin.io.print_s8jyv4$;
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
   var setOf = Kotlin.kotlin.collections.setOf_i5x0yv$;
   var minus = Kotlin.kotlin.collections.minus_khz7k3$;
-  var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var sum = Kotlin.kotlin.collections.sum_plj8ka$;
   var flatten = Kotlin.kotlin.collections.flatten_u0ad8z$;
+  var first = Kotlin.kotlin.collections.first_2p1efm$;
   var throwCCE = Kotlin.throwCCE;
   var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
@@ -81,9 +82,9 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     fächer.add_11rb$(new Fach('Bildende Kunst', Aufgabenfeld$I_getInstance(), listOf([5, 2, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Musik', Aufgabenfeld$I_getInstance(), listOf([5, 2, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Geschichte', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
+    fächer.add_11rb$(new Fach('Geographie/Gemeinschaftskunde', Aufgabenfeld$II_getInstance(), listOf([0, 2, 0]), listOf_0(Fachattribute$GeGe_getInstance())));
     fächer.add_11rb$(new Fach('Geographie', Aufgabenfeld$II_getInstance(), listOf([5, 0, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Gemeinschaftskunde', Aufgabenfeld$II_getInstance(), listOf([5, 0, 0]), emptyList()));
-    fächer.add_11rb$(new Fach('Geographie/Gemeinschaftskunde', Aufgabenfeld$II_getInstance(), listOf([0, 2, 0]), listOf_0(Fachattribute$GeGe_getInstance())));
     fächer.add_11rb$(new Fach('Religionslehre', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Ethik', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Wirtschaft', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
@@ -252,7 +253,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   Belegung$Kommentar.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.kommentarart, other.kommentarart) && Kotlin.equals(this.text, other.text)))));
   };
-  function Belegung$ZeileDarstellung(name, aufgabenfeld, gewählt, klickbar, mündlich, mündlichKlickbar, stunden, stundenAlternativVorhanden) {
+  function Belegung$ZeileDarstellung(name, aufgabenfeld, gewählt, klickbar, mündlich, mündlichKlickbar, stunden, stundenAlternativVorhanden, fachnameOriginal) {
     Belegung$Zeile.call(this);
     this.name = name;
     this.aufgabenfeld = aufgabenfeld;
@@ -262,6 +263,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     this.mündlichKlickbar = mündlichKlickbar;
     this.stunden = stunden;
     this.stundenAlternativVorhanden = stundenAlternativVorhanden;
+    this.fachnameOriginal = fachnameOriginal;
   }
   Belegung$ZeileDarstellung.$metadata$ = {
     kind: Kind_CLASS,
@@ -292,11 +294,14 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   Belegung$ZeileDarstellung.prototype.component8 = function () {
     return this.stundenAlternativVorhanden;
   };
-  Belegung$ZeileDarstellung.prototype.copy_4g2pg8$ = function (name, aufgabenfeld, gewählt, klickbar, mündlich, mündlichKlickbar, stunden, stundenAlternativVorhanden) {
-    return new Belegung$ZeileDarstellung(name === void 0 ? this.name : name, aufgabenfeld === void 0 ? this.aufgabenfeld : aufgabenfeld, gewählt === void 0 ? this.gewählt : gewählt, klickbar === void 0 ? this.klickbar : klickbar, mündlich === void 0 ? this.mündlich : mündlich, mündlichKlickbar === void 0 ? this.mündlichKlickbar : mündlichKlickbar, stunden === void 0 ? this.stunden : stunden, stundenAlternativVorhanden === void 0 ? this.stundenAlternativVorhanden : stundenAlternativVorhanden);
+  Belegung$ZeileDarstellung.prototype.component9 = function () {
+    return this.fachnameOriginal;
+  };
+  Belegung$ZeileDarstellung.prototype.copy_rc5irq$ = function (name, aufgabenfeld, gewählt, klickbar, mündlich, mündlichKlickbar, stunden, stundenAlternativVorhanden, fachnameOriginal) {
+    return new Belegung$ZeileDarstellung(name === void 0 ? this.name : name, aufgabenfeld === void 0 ? this.aufgabenfeld : aufgabenfeld, gewählt === void 0 ? this.gewählt : gewählt, klickbar === void 0 ? this.klickbar : klickbar, mündlich === void 0 ? this.mündlich : mündlich, mündlichKlickbar === void 0 ? this.mündlichKlickbar : mündlichKlickbar, stunden === void 0 ? this.stunden : stunden, stundenAlternativVorhanden === void 0 ? this.stundenAlternativVorhanden : stundenAlternativVorhanden, fachnameOriginal === void 0 ? this.fachnameOriginal : fachnameOriginal);
   };
   Belegung$ZeileDarstellung.prototype.toString = function () {
-    return 'ZeileDarstellung(name=' + Kotlin.toString(this.name) + (', aufgabenfeld=' + Kotlin.toString(this.aufgabenfeld)) + (', gew\xE4hlt=' + Kotlin.toString(this.gewählt)) + (', klickbar=' + Kotlin.toString(this.klickbar)) + (', m\xFCndlich=' + Kotlin.toString(this.mündlich)) + (', m\xFCndlichKlickbar=' + Kotlin.toString(this.mündlichKlickbar)) + (', stunden=' + Kotlin.toString(this.stunden)) + (', stundenAlternativVorhanden=' + Kotlin.toString(this.stundenAlternativVorhanden)) + ')';
+    return 'ZeileDarstellung(name=' + Kotlin.toString(this.name) + (', aufgabenfeld=' + Kotlin.toString(this.aufgabenfeld)) + (', gew\xE4hlt=' + Kotlin.toString(this.gewählt)) + (', klickbar=' + Kotlin.toString(this.klickbar)) + (', m\xFCndlich=' + Kotlin.toString(this.mündlich)) + (', m\xFCndlichKlickbar=' + Kotlin.toString(this.mündlichKlickbar)) + (', stunden=' + Kotlin.toString(this.stunden)) + (', stundenAlternativVorhanden=' + Kotlin.toString(this.stundenAlternativVorhanden)) + (', fachnameOriginal=' + Kotlin.toString(this.fachnameOriginal)) + ')';
   };
   Belegung$ZeileDarstellung.prototype.hashCode = function () {
     var result = 0;
@@ -308,10 +313,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     result = result * 31 + Kotlin.hashCode(this.mündlichKlickbar) | 0;
     result = result * 31 + Kotlin.hashCode(this.stunden) | 0;
     result = result * 31 + Kotlin.hashCode(this.stundenAlternativVorhanden) | 0;
+    result = result * 31 + Kotlin.hashCode(this.fachnameOriginal) | 0;
     return result;
   };
   Belegung$ZeileDarstellung.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.aufgabenfeld, other.aufgabenfeld) && Kotlin.equals(this.gewählt, other.gewählt) && Kotlin.equals(this.klickbar, other.klickbar) && Kotlin.equals(this.mündlich, other.mündlich) && Kotlin.equals(this.mündlichKlickbar, other.mündlichKlickbar) && Kotlin.equals(this.stunden, other.stunden) && Kotlin.equals(this.stundenAlternativVorhanden, other.stundenAlternativVorhanden)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.aufgabenfeld, other.aufgabenfeld) && Kotlin.equals(this.gewählt, other.gewählt) && Kotlin.equals(this.klickbar, other.klickbar) && Kotlin.equals(this.mündlich, other.mündlich) && Kotlin.equals(this.mündlichKlickbar, other.mündlichKlickbar) && Kotlin.equals(this.stunden, other.stunden) && Kotlin.equals(this.stundenAlternativVorhanden, other.stundenAlternativVorhanden) && Kotlin.equals(this.fachnameOriginal, other.fachnameOriginal)))));
   };
   Belegung.prototype.anzahlLeistungsfächer_0 = function () {
     var $receiver = this.aktuelleBelegung_0;
@@ -481,6 +487,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         var stunden = ArrayList_init();
         var stundenAlternativVorhanden = false;
         name = f.key;
+        var fachnameOriginal = f.key;
         var varianten = f.value;
         tmp$_1 = varianten.iterator();
         while (tmp$_1.hasNext()) {
@@ -500,6 +507,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
               stundenAlternativVorhanden = true;
             }
             if (v.attribute.contains_11rb$(Fachattribute$GeGe_getInstance())) {
+              v.stunden = mutableListOf([2, 2, 2, 2]);
               var $receiver_1 = this.aktuelleBelegung_0;
               var destination_1 = ArrayList_init();
               var tmp$_4;
@@ -512,6 +520,62 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
               if (destination_1.size > 0) {
                 stundenAlternativVorhanden = true;
               }
+              var $receiver_2 = this.aktuelleBelegung_0;
+              var destination_2 = ArrayList_init();
+              var tmp$_5;
+              tmp$_5 = $receiver_2.iterator();
+              while (tmp$_5.hasNext()) {
+                var element_2 = tmp$_5.next();
+                if (equals(element_2.name, 'Gemeinschaftskunde') && element_2.typ === Belegung$Companion$Kursart$LF_getInstance())
+                  destination_2.add_11rb$(element_2);
+              }
+              if (destination_2.size > 0) {
+                stundenAlternativVorhanden = false;
+                v.stunden = mutableListOf([2, 0, 0, 2]);
+                name = 'Geographie';
+                stunden = v.stunden;
+              }
+              var $receiver_3 = this.aktuelleBelegung_0;
+              var destination_3 = ArrayList_init();
+              var tmp$_6;
+              tmp$_6 = $receiver_3.iterator();
+              while (tmp$_6.hasNext()) {
+                var element_3 = tmp$_6.next();
+                if (equals(element_3.name, 'Geographie') && element_3.typ === Belegung$Companion$Kursart$LF_getInstance())
+                  destination_3.add_11rb$(element_3);
+              }
+              if (destination_3.size > 0) {
+                stundenAlternativVorhanden = false;
+                v.stunden = mutableListOf([0, 2, 2, 0]);
+                stunden = v.stunden;
+                name = 'Gemeinschaftskunde';
+              }
+            }
+          }
+          if (v.attribute.contains_11rb$(Fachattribute$GeGe_getInstance())) {
+            var $receiver_4 = this.aktuelleBelegung_0;
+            var destination_4 = ArrayList_init();
+            var tmp$_7;
+            tmp$_7 = $receiver_4.iterator();
+            while (tmp$_7.hasNext()) {
+              var element_4 = tmp$_7.next();
+              if (equals(element_4.name, 'Gemeinschaftskunde') && element_4.typ === Belegung$Companion$Kursart$LF_getInstance())
+                destination_4.add_11rb$(element_4);
+            }
+            if (destination_4.size > 0) {
+              name = 'Geographie';
+            }
+            var $receiver_5 = this.aktuelleBelegung_0;
+            var destination_5 = ArrayList_init();
+            var tmp$_8;
+            tmp$_8 = $receiver_5.iterator();
+            while (tmp$_8.hasNext()) {
+              var element_5 = tmp$_8.next();
+              if (equals(element_5.name, 'Geographie') && element_5.typ === Belegung$Companion$Kursart$LF_getInstance())
+                destination_5.add_11rb$(element_5);
+            }
+            if (destination_5.size > 0) {
+              name = 'Gemeinschaftskunde';
             }
           }
           if (v.typ === Belegung$Companion$Kursart$BF_getInstance() || v.typ === Belegung$Companion$Kursart$WF_getInstance()) {
@@ -533,7 +597,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
             }
           }
         }
-        text.add_11rb$(new Belegung$ZeileDarstellung(name == null ? throwUPAE('name') : name, aufgabenfeld, gewählt, klickbarWahl, mündlich, mündlichKlickbar, stunden, stundenAlternativVorhanden));
+        text.add_11rb$(new Belegung$ZeileDarstellung(name == null ? throwUPAE('name') : name, aufgabenfeld, gewählt, klickbarWahl, mündlich, mündlichKlickbar, stunden, stundenAlternativVorhanden, fachnameOriginal));
       }
     }
     text.add_11rb$(new Belegung$Summe(this.holeWochenStunden_0()));
@@ -972,6 +1036,157 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     return rückgabe;
   };
+  Belegung.prototype.serialisiere = function () {
+    var kodierung = '';
+    var schonErledigt = ArrayList_init();
+    var $receiver = this.aktuelleBelegung_0;
+    var destination = ArrayList_init();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (element.attribute.contains_11rb$(Fachattribute$Mathematik_getInstance()) && element.typ === Belegung$Companion$Kursart$LF_getInstance())
+        destination.add_11rb$(element);
+    }
+    kodierung += destination.size;
+    var $receiver_0 = this.aktuelleBelegung_0;
+    var destination_0 = ArrayList_init();
+    var tmp$_0;
+    tmp$_0 = $receiver_0.iterator();
+    while (tmp$_0.hasNext()) {
+      var element_0 = tmp$_0.next();
+      if (element_0.attribute.contains_11rb$(Fachattribute$Deutsch_getInstance()) && element_0.typ === Belegung$Companion$Kursart$LF_getInstance())
+        destination_0.add_11rb$(element_0);
+    }
+    kodierung += destination_0.size;
+    var $receiver_1 = this.aktuelleBelegung_0;
+    var destination_1 = ArrayList_init();
+    var tmp$_1;
+    tmp$_1 = $receiver_1.iterator();
+    while (tmp$_1.hasNext()) {
+      var element_1 = tmp$_1.next();
+      if (element_1.attribute.contains_11rb$(Fachattribute$Mathematik_getInstance()))
+        destination_1.add_11rb$(element_1);
+    }
+    schonErledigt.add_11rb$(first(destination_1));
+    var $receiver_2 = this.aktuelleBelegung_0;
+    var destination_2 = ArrayList_init();
+    var tmp$_2;
+    tmp$_2 = $receiver_2.iterator();
+    while (tmp$_2.hasNext()) {
+      var element_2 = tmp$_2.next();
+      if (element_2.attribute.contains_11rb$(Fachattribute$Deutsch_getInstance()))
+        destination_2.add_11rb$(element_2);
+    }
+    schonErledigt.add_11rb$(first(destination_2));
+    var sprache = {v: ''};
+    var index = 0;
+    for (var tmp$_3 = Belegung$Companion_getInstance().sprachen.iterator(); tmp$_3.hasNext(); ++index) {
+      var s = tmp$_3.next();
+      var $receiver_3 = this.aktuelleBelegung_0;
+      var destination_3 = ArrayList_init();
+      var tmp$_4;
+      tmp$_4 = $receiver_3.iterator();
+      while (tmp$_4.hasNext()) {
+        var element_3 = tmp$_4.next();
+        if (equals(element_3.name, s))
+          destination_3.add_11rb$(element_3);
+      }
+      if (destination_3.size > 0) {
+        sprache.v = s;
+        kodierung += Belegung$Companion_getInstance().binär3.get_za3lpa$(index);
+        break;
+      }
+    }
+    var $receiver_4 = this.aktuelleBelegung_0;
+    var destination_4 = ArrayList_init();
+    var tmp$_5;
+    tmp$_5 = $receiver_4.iterator();
+    while (tmp$_5.hasNext()) {
+      var element_4 = tmp$_5.next();
+      if (equals(element_4.name, sprache.v))
+        destination_4.add_11rb$(element_4);
+    }
+    var fachAktuell = first(destination_4);
+    schonErledigt.add_11rb$(fachAktuell);
+    if (fachAktuell.typ === Belegung$Companion$Kursart$LF_getInstance()) {
+      kodierung += '1';
+    }
+     else {
+      kodierung += '0';
+      if (fachAktuell.alternativStunden === true) {
+        kodierung += '1';
+      }
+       else {
+        kodierung += '0';
+      }
+      if (fachAktuell.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
+        kodierung += '1';
+      }
+       else {
+        kodierung += '0';
+      }
+    }
+    var naturwissenschaft = {v: ''};
+    var index_0 = 0;
+    for (var tmp$_6 = Belegung$Companion_getInstance().naturwissenschaften.iterator(); tmp$_6.hasNext(); ++index_0) {
+      var s_0 = tmp$_6.next();
+      var $receiver_5 = this.aktuelleBelegung_0;
+      var destination_5 = ArrayList_init();
+      var tmp$_7;
+      tmp$_7 = $receiver_5.iterator();
+      while (tmp$_7.hasNext()) {
+        var element_5 = tmp$_7.next();
+        if (equals(element_5.name, s_0))
+          destination_5.add_11rb$(element_5);
+      }
+      if (destination_5.size > 0) {
+        naturwissenschaft.v = s_0;
+        kodierung += Belegung$Companion_getInstance().binär2.get_za3lpa$(index_0);
+        break;
+      }
+    }
+    var $receiver_6 = this.aktuelleBelegung_0;
+    var destination_6 = ArrayList_init();
+    var tmp$_8;
+    tmp$_8 = $receiver_6.iterator();
+    while (tmp$_8.hasNext()) {
+      var element_6 = tmp$_8.next();
+      if (equals(element_6.name, naturwissenschaft.v))
+        destination_6.add_11rb$(element_6);
+    }
+    fachAktuell = first(destination_6);
+    schonErledigt.add_11rb$(fachAktuell);
+    kodierung += this.fachBFoderLF_0(fachAktuell);
+    var $receiver_7 = this.aktuelleBelegung_0;
+    var destination_7 = ArrayList_init();
+    var tmp$_9;
+    tmp$_9 = $receiver_7.iterator();
+    while (tmp$_9.hasNext()) {
+      var element_7 = tmp$_9.next();
+      if (equals(element_7.name, 'Geschichte'))
+        destination_7.add_11rb$(element_7);
+    }
+    fachAktuell = first(destination_7);
+    schonErledigt.add_11rb$(fachAktuell);
+    kodierung += this.fachBFoderLF_0(fachAktuell);
+  };
+  Belegung.prototype.fachBFoderLF_0 = function (fachAktuell) {
+    var kodierung = '';
+    if (fachAktuell.typ === Belegung$Companion$Kursart$LF_getInstance()) {
+      kodierung += '1';
+    }
+     else {
+      kodierung += '0';
+      if (fachAktuell.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
+        kodierung += '1';
+      }
+       else {
+        kodierung += '0';
+      }
+    }
+    return kodierung;
+  };
   Belegung.prototype.mehrfach_fyomdn$ = function ($receiver) {
     var fachMap = LinkedHashMap_init();
     var destination = LinkedHashMap_init();
@@ -1122,7 +1337,6 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         this.testeSprachenOderNaturwissenschaft_0();
         this.testePflichtbelegungRest_0();
         this.testeMindestens42Kurse_0();
-        this.testeMindestens32Wochenstunden_0();
         break loop_label;
       case 'TOGGLEM\xDCNDLICH':
         var name_2 = typeof (tmp$_4 = parameter[0]) === 'string' ? tmp$_4 : throwCCE();
@@ -1252,6 +1466,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   function Belegung$Companion() {
     Belegung$Companion_instance = this;
+    this.binär2 = listOf(['00', '01', '10', '11']);
+    this.binär3 = listOf(['000', '001', '010', '011', '100', '101', '110', '111']);
+    this.naturwissenschaften = listOf(['Physik', 'Chemie', 'Biologie']);
+    this.sprachen = listOf(['Englisch', 'Franz\xF6sisch', 'Latein', 'Griechisch', 'Russisch', 'Spanisch', 'Italienisch', 'Portugiesisch']);
+    this.lfOderBfOderBfMündlich = hashMapOf([to('LF', '10'), to('BF', '01'), to('BFm\xFCndlich', '11')]);
     this.fehlerMeldungen = ArrayList_init();
     this.Text = hashMapOf([to(Belegung$Companion$Kursart$BF_getInstance(), 'Basisfach'), to(Aufgabenfeld$I_getInstance(), 'Sprachlich'), to(Aufgabenfeld$II_getInstance(), 'Gesellschaftswissenschaften'), to(Aufgabenfeld$III_getInstance(), 'Mathematik und Naturwissenschaften')]);
     this.leistungsfachBereiche = setOf([Fachattribute$Mathematik_getInstance(), Fachattribute$Fremdsprache_getInstance(), Fachattribute$Naturwissenschaft_getInstance(), Fachattribute$Deutsch_getInstance()]);
@@ -1739,9 +1958,10 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     fächer.add_11rb$(new Fach('Geographie', Aufgabenfeld$II_getInstance(), listOf([5, 0, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Gemeinschaftskunde', Aufgabenfeld$II_getInstance(), listOf([5, 0, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Geo/Gk', Aufgabenfeld$II_getInstance(), listOf([0, 2, 0]), listOf_0(Fachattribute$GeGe_getInstance())));
+    fächer.add_11rb$(new Fach('Geo/Gk', Aufgabenfeld$II_getInstance(), listOf([0, 2, 0]), listOf_0(Fachattribute$GeGe_getInstance())));
     fächer.add_11rb$(new Fach('Religionslehre', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Ethik', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
-    fächer.add_11rb$(new Fach('Wirtschaft', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), emptyList()));
+    fächer.add_11rb$(new Fach('Wirtschaft', Aufgabenfeld$II_getInstance(), listOf([5, 0, 0]), emptyList()));
     fächer.add_11rb$(new Fach('Mathematik', Aufgabenfeld$III_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Mathematik_getInstance())));
     fächer.add_11rb$(new Fach('Biologie', Aufgabenfeld$III_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Naturwissenschaft_getInstance())));
     fächer.add_11rb$(new Fach('Chemie', Aufgabenfeld$III_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Naturwissenschaft_getInstance())));
@@ -1843,7 +2063,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       if (closure$zeile.klickbar.contains_11rb$(Belegung$Companion$Kursart$LF_getInstance())) {
         $receiver.unaryPlus_pdl1vz$('LF');
         klassen.add_11rb$('klickbar');
-        set_id($receiver, closure$zeile.name + '_LF');
+        set_id($receiver, closure$zeile.fachnameOriginal + '_LF');
       }
       if (equals(closure$zeile.gewählt, Belegung$Companion$Kursart$LF_getInstance())) {
         klassen.add_11rb$('belegt_LF');
@@ -1858,7 +2078,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       if (closure$zeile.klickbar.contains_11rb$(Belegung$Companion$Kursart$BF_getInstance())) {
         $receiver.unaryPlus_pdl1vz$('BF');
         klassen.add_11rb$('klickbar');
-        set_id($receiver, closure$zeile.name + '_BF');
+        set_id($receiver, closure$zeile.fachnameOriginal + '_BF');
         if (equals(closure$zeile.gewählt, Belegung$Companion$Kursart$BF_getInstance())) {
           klassen.add_11rb$('belegt_BF');
         }
@@ -1866,7 +2086,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
        else if (closure$zeile.klickbar.contains_11rb$(Belegung$Companion$Kursart$WF_getInstance())) {
         $receiver.unaryPlus_pdl1vz$('WF');
         klassen.add_11rb$('klickbar');
-        set_id($receiver, closure$zeile.name + '_WF');
+        set_id($receiver, closure$zeile.fachnameOriginal + '_WF');
         if (equals(closure$zeile.gewählt, Belegung$Companion$Kursart$WF_getInstance())) {
           klassen.add_11rb$('belegt_WF');
         }
@@ -1884,10 +2104,10 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         var gewählt = (tmp$ = closure$zeile.gewählt) != null ? tmp$ : '';
         if (Kotlin.isType(gewählt, Belegung$Companion$Kursart)) {
           if (equals(gewählt, Belegung$Companion$Kursart$BF_getInstance())) {
-            set_id($receiver, closure$zeile.name + '_mBF');
+            set_id($receiver, closure$zeile.fachnameOriginal + '_mBF');
           }
            else if (equals(gewählt, Belegung$Companion$Kursart$WF_getInstance())) {
-            set_id($receiver, closure$zeile.name + '_mWF');
+            set_id($receiver, closure$zeile.fachnameOriginal + '_mWF');
           }
         }
       }
@@ -2111,7 +2331,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         (tmp$_2 = document.getElementById(id_mündlich)) != null ? (tmp$_2.innerHTML = 'X') : null;
       }
        else {
-        (tmp$_3 = document.getElementById(id_mündlich)) != null ? (tmp$_3.innerHTML = ' ') : null;
+        (tmp$_3 = document.getElementById(id_mündlich)) != null ? (tmp$_3.innerHTML = '&nbsp;&nbsp;') : null;
       }
     }
   }
