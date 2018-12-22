@@ -2307,13 +2307,13 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   Variablen$Ansichten.valueOf_61zpoe$ = Variablen$Ansichten$valueOf;
   Variablen.prototype.setzeHash = function () {
-    window.location.hash = '#id=' + this.status + '|ex=' + this.excluded;
+    window.location.hash = '#id=' + this.status + ';ex=' + this.excluded;
   };
   var HashMap_init = Kotlin.kotlin.collections.HashMap_init_q3lmfv$;
   Variablen.prototype.getParameterSet_61zpoe$ = function (input) {
     var tmp$;
     var hm = HashMap_init();
-    var parameter = split(input.substring(1), ['|']);
+    var parameter = split(input.substring(1), [';']);
     tmp$ = parameter.iterator();
     while (tmp$.hasNext()) {
       var p = tmp$.next();
