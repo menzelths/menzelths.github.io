@@ -966,8 +966,8 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       }
     }
     if (fehlendeFächer.size > 0) {
-      println('Folgende F\xE4cher fehlen noch: ' + joinToString(fehlendeFächer, ', '));
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Folgende F\xE4cher fehlen noch: ' + joinToString(fehlendeFächer, ', ')));
+      println('Folgende F\xE4cher fehlen noch: ' + joinToString(fehlendeFächer, ', ') + '.');
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Folgende F\xE4cher fehlen noch: ' + joinToString(fehlendeFächer, ', ') + '.'));
     }
     return fehlendeFächer.size === 0;
   };
@@ -1007,7 +1007,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     println('Anzahl der gew\xE4hlten Kurse: ' + kurssumme);
     if (kurssumme < 42) {
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Anzahl der gew\xE4hlten Kurse: ' + kurssumme + '. Es m\xFCssen jedoch mindestens 42 Kurse gew\xE4hlt werden'));
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Anzahl der gew\xE4hlten Kurse: ' + kurssumme + '. Es m\xFCssen jedoch mindestens 42 Kurse gew\xE4hlt werden.'));
     }
     if (kurssumme >= 42) {
       Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Mit ' + kurssumme + ' belegten Kursen ist die Bedingung von mindestens 42 belegten Kursen erf\xFCllt.'));
