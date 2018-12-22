@@ -1059,7 +1059,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     tmp$_1 = $receiver_0.iterator();
     while (tmp$_1.hasNext()) {
       var element_0 = tmp$_1.next();
-      if (element_0.attribute.contains_11rb$(Fachattribute$MuKu_getInstance()) && element_0.attribute.contains_11rb$(Fachattribute$MuKu_getInstance()))
+      if (element_0.attribute.contains_11rb$(Fachattribute$MuKu_getInstance()) && element_0.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance()))
         destination_0.add_11rb$(element_0);
     }
     if (destination_0.size > 0) {
