@@ -45,6 +45,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   var getValue = Kotlin.kotlin.collections.getValue_t9ocha$;
   var split = Kotlin.kotlin.text.split_ip8yn$;
   var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
+  var h2 = $module$kotlinx_html_js.kotlinx.html.h2_eh5gi3$;
   var setOf_0 = Kotlin.kotlin.collections.setOf_mh5how$;
   var set_classes = $module$kotlinx_html_js.kotlinx.html.set_classes_njy09m$;
   var span = $module$kotlinx_html_js.kotlinx.html.span_6djfml$;
@@ -61,6 +62,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   var td = $module$kotlinx_html_js.kotlinx.html.td_vlzo05$;
   var tr = $module$kotlinx_html_js.kotlinx.html.tr_7wec05$;
   var table = $module$kotlinx_html_js.kotlinx.html.table_dmqmme$;
+  var li = $module$kotlinx_html_js.kotlinx.html.li_yzv5uh$;
   var div_0 = $module$kotlinx_html_js.kotlinx.html.div_ri36nr$;
   var startsWith = Kotlin.kotlin.text.startsWith_7epoxm$;
   var addClass = Kotlin.kotlin.dom.addClass_hhb33f$;
@@ -98,7 +100,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     fächer.add_11rb$(new Fach('Italienisch', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 7, false));
     fächer.add_11rb$(new Fach('Portugiesisch', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 8, false));
     fächer.add_11rb$(new Fach('Chinesisch', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 9, false));
-    fächer.add_11rb$(new Fach('Bildende Kunst', Aufgabenfeld$I_getInstance(), listOf([5, 2, 0]), listOf_0(Fachattribute$MuKu_getInstance()), 10, false));
+    fächer.add_11rb$(new Fach('Bildende Kunst', Aufgabenfeld$I_getInstance(), listOf([5, 2, 0]), listOf_0(Fachattribute$MuKu_getInstance()), 10, true));
     fächer.add_11rb$(new Fach('Musik', Aufgabenfeld$I_getInstance(), listOf([5, 2, 0]), listOf_0(Fachattribute$MuKu_getInstance()), 11, true));
     fächer.add_11rb$(new Fach('Geschichte', Aufgabenfeld$II_getInstance(), listOf([5, 2, 0]), listOf_0(Fachattribute$Geschichte_getInstance()), 12, true));
     fächer.add_11rb$(new Fach('Geographie', Aufgabenfeld$II_getInstance(), listOf([5, 0, 0]), emptyList(), 13, true));
@@ -136,9 +138,16 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Informatik', Belegung$Companion$Kursart$LF_getInstance()]);
     aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Geschichte', Belegung$Companion$Kursart$BF_getInstance()]);
     aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Religionslehre', Belegung$Companion$Kursart$BF_getInstance()]);
-    aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$TOGGLEMÜNDLICH_getInstance(), ['Geschichte', Belegung$Companion$Kursart$BF_getInstance()]);
     aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$TOGGLEMÜNDLICH_getInstance(), ['Religionslehre', Belegung$Companion$Kursart$BF_getInstance()]);
     aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Deutsch', Belegung$Companion$Kursart$BF_getInstance()]);
+    aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$TOGGLEMÜNDLICH_getInstance(), ['Deutsch', Belegung$Companion$Kursart$BF_getInstance()]);
+    aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Geo/Gk', Belegung$Companion$Kursart$BF_getInstance()]);
+    aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Sport', Belegung$Companion$Kursart$BF_getInstance()]);
+    aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Physik', Belegung$Companion$Kursart$LF_getInstance()]);
+    aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Biologie', Belegung$Companion$Kursart$BF_getInstance()]);
+    aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Bildende Kunst', Belegung$Companion$Kursart$BF_getInstance()]);
+    aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$NEU_getInstance(), ['Wahlfach Informatik', Belegung$Companion$Kursart$WF_getInstance()]);
+    aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$TOGGLESTUNDEN_getInstance(), ['Wahlfach Informatik', Belegung$Companion$Kursart$WF_getInstance()]);
     aktuelleBelegung.action_4t1mlb$(Belegung$Companion$Aktion$CHECK_getInstance(), []);
     Belegung$Companion_getInstance().belegungsObjekt = aktuelleBelegung;
     (new Sample()).checkMe();
@@ -733,13 +742,22 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         destination_1.add_11rb$(element_1);
     }
     var naturwissenschaftersatz = destination_1;
-    println(sprachen.size.toString() + ' Sprache(n) und ' + naturwissenschaften.size + ' Naturwissenschaft(en) gew\xE4hlt.');
-    Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$NEUTRAL_getInstance(), sprachen.size.toString() + ' Sprache(n) und ' + naturwissenschaften.size + ' Naturwissenschaft(en) gew\xE4hlt.'));
-    var tmp$_2 = sprachen.size === 0;
-    if (!tmp$_2) {
-      tmp$_2 = naturwissenschaften.size === 0;
-    }
+    var tmp$_2 = sprachen.size > 0;
     if (tmp$_2) {
+      tmp$_2 = naturwissenschaften.size > 0;
+    }
+    var tmp$_3 = tmp$_2;
+    if (tmp$_3) {
+      tmp$_3 = (sprachen.size + naturwissenschaften.size | 0) > 2;
+    }
+    var kommentarart = tmp$_3 ? Belegung$Kommentarart$GUT_getInstance() : Belegung$Kommentarart$SCHLECHT_getInstance();
+    println(sprachen.size.toString() + ' Sprache(n) und ' + naturwissenschaften.size + ' Naturwissenschaft(en) gew\xE4hlt.');
+    Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(kommentarart, sprachen.size.toString() + ' Sprache(n) und ' + naturwissenschaften.size + ' Naturwissenschaft(en) gew\xE4hlt.'));
+    var tmp$_4 = sprachen.size === 0;
+    if (!tmp$_4) {
+      tmp$_4 = naturwissenschaften.size === 0;
+    }
+    if (tmp$_4) {
       println('Es wurde noch keine Fremdsprache gew\xE4hlt.');
       if ((naturwissenschaften.size - naturwissenschaftersatz.size | 0) === 0) {
         Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es wurde noch keine klassische Naturwissenschaft gew\xE4hlt.'));
@@ -749,21 +767,21 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       }
       return false;
     }
-    var tmp$_3 = sprachen.size < 2;
-    if (tmp$_3) {
-      tmp$_3 = naturwissenschaften.size < 2;
+    var tmp$_5 = sprachen.size < 2;
+    if (tmp$_5) {
+      tmp$_5 = naturwissenschaften.size < 2;
     }
-    if (tmp$_3) {
+    if (tmp$_5) {
       println('Es m\xFCssen entweder mindestens 2 Naturwissenschaften und 1 Sprache belegt werden oder umgekehrt.');
       Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es m\xFCssen entweder mindestens 2 Naturwissenschaften und 1 Sprache belegt werden oder umgekehrt.'));
       return false;
     }
      else {
-      var tmp$_4 = sprachen.size < 2;
-      if (tmp$_4) {
-        tmp$_4 = naturwissenschaften.size >= 2;
+      var tmp$_6 = sprachen.size < 2;
+      if (tmp$_6) {
+        tmp$_6 = naturwissenschaften.size >= 2;
       }
-      if (tmp$_4) {
+      if (tmp$_6) {
         var anzahlKlassischeNaturwissenschaften = naturwissenschaften.size - naturwissenschaftersatz.size | 0;
         if (anzahlKlassischeNaturwissenschaften === 0) {
           println('Es muss mindestens eine klassische Naturwissenschaft belegt werden.');
@@ -772,17 +790,17 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         }
          else if (anzahlKlassischeNaturwissenschaften === 1) {
           var destination_2 = ArrayList_init();
-          var tmp$_5;
-          tmp$_5 = naturwissenschaften.iterator();
-          while (tmp$_5.hasNext()) {
-            var element_2 = tmp$_5.next();
+          var tmp$_7;
+          tmp$_7 = naturwissenschaften.iterator();
+          while (tmp$_7.hasNext()) {
+            var element_2 = tmp$_7.next();
             if (element_2.typ === Belegung$Companion$Kursart$LF_getInstance())
               destination_2.add_11rb$(element_2);
           }
           var anzahlLeistungsfächer = destination_2.size;
           if (anzahlLeistungsfächer > 0) {
             println('G\xFCltige Kombination f\xFCr Naturwissenschaften');
-            Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'G\xFCltige Kombination f\xFCr Naturwissenschaften'));
+            Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'G\xFCltige Kombination f\xFCr Naturwissenschaften.'));
             return true;
           }
            else {
@@ -845,12 +863,12 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     if (prüfungsfächer.size < 5) {
       println('Es m\xFCssen drei Leistungsf\xE4cher f\xFCr die schriftliche und zwei Basisf\xE4cher f\xFCr die m\xFCndliche Pr\xFCfung gew\xE4hlt werden');
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es m\xFCssen drei Leistungsf\xE4cher f\xFCr die schriftliche und zwei Basisf\xE4cher f\xFCr die m\xFCndliche Pr\xFCfung gew\xE4hlt werden'));
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es m\xFCssen drei Leistungsf\xE4cher f\xFCr die schriftliche und zwei Basisf\xE4cher f\xFCr die m\xFCndliche Pr\xFCfung gew\xE4hlt werden.'));
       return false;
     }
      else {
       println('Es sind drei Leistungsf\xE4cher und f\xFCr die m\xFCndliche Pr\xFCfung zwei Basisf\xE4cher gew\xE4hlt');
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Es sind drei Leistungsf\xE4cher und f\xFCr die m\xFCndliche Pr\xFCfung zwei Basisf\xE4cher gew\xE4hlt'));
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Es sind f\xFCr die Abiturpr\xFCfung drei Leistungsf\xE4cher und zwei m\xFCndliche Pr\xFCfungsf\xE4cher gew\xE4hlt.'));
       rueckgabe = true;
     }
     var destination_1 = ArrayList_init_0(collectionSizeOrDefault(prüfungsfächer, 10));
@@ -870,7 +888,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         var item_0 = tmp$_2.next();
         destination_2.add_11rb$(Belegung$Companion_getInstance().Text.get_11rb$(item_0));
       }
-      println('Die folgenden Aufgabenfelder sind noch nicht in der Abiturpr\xFCfung abgedeckt: ' + joinToString(destination_2, ','));
+      println('Die folgenden Aufgabenfelder sind noch nicht in der Abiturpr\xFCfung abgedeckt: ' + joinToString(destination_2, ',') + '.');
       var tmp$_3 = Belegung$Companion_getInstance().fehlerMeldungen;
       var tmp$_4 = Belegung$Kommentarart$SCHLECHT_getInstance();
       var destination_3 = ArrayList_init_0(collectionSizeOrDefault(fehlendeBereiche, 10));
@@ -880,7 +898,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         var item_1 = tmp$_5.next();
         destination_3.add_11rb$(Belegung$Companion_getInstance().Text.get_11rb$(item_1));
       }
-      tmp$_3.add_11rb$(new Belegung$Kommentar(tmp$_4, 'Die folgenden Aufgabenfelder sind noch nicht in der Abiturpr\xFCfung abgedeckt: ' + joinToString(destination_3, ',')));
+      tmp$_3.add_11rb$(new Belegung$Kommentar(tmp$_4, 'Die folgenden Aufgabenfelder sind noch nicht in der Abiturpr\xFCfung abgedeckt: ' + joinToString(destination_3, ',') + '.'));
       return false;
     }
     return rueckgabe;
@@ -988,10 +1006,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       kurssumme = tmp$_0 + tmp$_1 | 0;
     }
     println('Anzahl der gew\xE4hlten Kurse: ' + kurssumme);
-    Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$NEUTRAL_getInstance(), 'Anzahl der gew\xE4hlten Kurse: ' + kurssumme));
     if (kurssumme < 42) {
-      println('Es m\xFCssen mindestens 42 Kurse gew\xE4hlt werden');
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es m\xFCssen mindestens 42 Kurse gew\xE4hlt werden'));
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Anzahl der gew\xE4hlten Kurse: ' + kurssumme + '. Es m\xFCssen jedoch mindestens 42 Kurse gew\xE4hlt werden'));
+    }
+    if (kurssumme >= 42) {
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Mit ' + kurssumme + ' belegten Kursen ist die Bedingung von mindestens 42 belegten Kursen erf\xFCllt.'));
     }
     return kurssumme >= 42;
   };
@@ -1081,12 +1100,12 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Es sind genau 40 anrechnungspflichtige Kurse in der Belegung vorhanden.'));
     }
      else if (kurssumme < 40) {
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Es sind mit ' + kurssumme + ' weniger als 40 anrechnungspflichtige Kurse in der Belegung vorhanden. Somit k\xF6nnen noch ' + (40 - kurssumme | 0) + ' Kurse zur Anrechnung gew\xE4hlt werden.'));
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Es sind mit ' + kurssumme + ' weniger als 40 anrechnungspflichtige Kurse in der Belegung vorhanden. Somit k\xF6nnen neben den anrechnungspflichtigen Kursen noch ' + (40 - kurssumme | 0) + ' Kurse aus der aktuellen Auswahl angerechnet werden.'));
     }
      else if (kurssumme > 40) {
       Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es sind mit ' + kurssumme + ' mehr als 40 anrechnungspflichtige Kurse in der Belegung vorhanden.'));
     }
-    return kurssumme === 40;
+    return kurssumme <= 40;
   };
   Belegung.prototype.holeWochenStunden_0 = function () {
     var tmp$;
@@ -1134,11 +1153,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     var rückgabe = false;
     if (leistungsfächer.size < 3) {
       println('Zu wenige Leistungsf\xE4cher gew\xE4hlt!');
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Zu wenige Leistungsf\xE4cher gew\xE4hlt!'));
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Zu wenige Leistungsf\xE4cher gew\xE4hlt.'));
     }
      else if (leistungsfächer.size > 3) {
       println('Zu viele Leistungsf\xE4cher gew\xE4hlt!');
-      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Zu viele Leistungsf\xE4cher gew\xE4hlt!'));
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Zu viele Leistungsf\xE4cher gew\xE4hlt.'));
     }
      else {
       var destination_0 = LinkedHashMap_init();
@@ -1163,12 +1182,12 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       var lfAuswahl = toSet(flatten(destination_0.keys));
       if (minus(Belegung$Companion_getInstance().leistungsfachBereiche, lfAuswahl).size <= 2) {
         println('Leistungsfachkombination g\xFCltig');
-        Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Leistungsfachkombination g\xFCltig'));
+        Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Leistungsfachkombination g\xFCltig.'));
         rückgabe = true;
       }
        else {
-        println('Leistungsfachkombination ung\xFCltig: zwei der drei Leistungsf\xE4cher m\xFCssen aus D, M, FS, Nawi sein');
-        Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Leistungsfachkombination ung\xFCltig: zwei der drei Leistungsf\xE4cher m\xFCssen aus D, M, FS, Nawi sein'));
+        println('Leistungsfachkombination ung\xFCltig: zwei der drei Leistungsf\xE4cher m\xFCssen aus D, M, FS, Nawi sein.');
+        Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Leistungsfachkombination ung\xFCltig: zwei der drei Leistungsf\xE4cher m\xFCssen aus D, M, FS, Nawi sein.'));
       }
     }
     return rückgabe;
@@ -1428,6 +1447,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         break loop_label;
       case 'CHECK':
         Belegung$Companion_getInstance().fehlerMeldungen = ArrayList_init();
+        Belegung$Companion_getInstance().kurswahlKorrekt = false;
         var fehlerListe = ArrayList_init();
         fehlerListe.add_11rb$(this.testeMehrfach_0());
         fehlerListe.add_11rb$(this.testeLeistungsfächer_0());
@@ -1445,7 +1465,18 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         }
 
         if (destination_2.size === 0) {
-          this.testeAnrechnungspflichtigeStunden_0();
+          fehlerListe.add_11rb$(this.testeAnrechnungspflichtigeStunden_0());
+          var destination_3 = ArrayList_init();
+          var tmp$_13;
+          tmp$_13 = fehlerListe.iterator();
+          while (tmp$_13.hasNext()) {
+            var element_3 = tmp$_13.next();
+            if (element_3 === false)
+              destination_3.add_11rb$(element_3);
+          }
+          if (destination_3.size === 0) {
+            Belegung$Companion_getInstance().kurswahlKorrekt = true;
+          }
         }
 
         break loop_label;
@@ -1453,24 +1484,24 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         var name_2 = typeof (tmp$_4 = parameter[0]) === 'string' ? tmp$_4 : throwCCE();
         var typ_1 = Kotlin.isType(tmp$_5 = parameter[1], Belegung$Companion$Kursart) ? tmp$_5 : throwCCE();
         var $receiver_2 = this.aktuelleBelegung_0;
-        var destination_3 = ArrayList_init();
-        var tmp$_13;
-        tmp$_13 = $receiver_2.iterator();
-        while (tmp$_13.hasNext()) {
-          var element_3 = tmp$_13.next();
-          if (element_3.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance()))
-            destination_3.add_11rb$(element_3);
+        var destination_4 = ArrayList_init();
+        var tmp$_14;
+        tmp$_14 = $receiver_2.iterator();
+        while (tmp$_14.hasNext()) {
+          var element_4 = tmp$_14.next();
+          if (element_4.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance()))
+            destination_4.add_11rb$(element_4);
         }
 
-        var anzahlPrüfungsfächer = destination_3.size;
+        var anzahlPrüfungsfächer = destination_4.size;
         var $receiver_3 = this.aktuelleBelegung_0;
         var indexOfFirst$result;
         indexOfFirst$break: do {
-          var tmp$_14;
+          var tmp$_15;
           var index = 0;
-          tmp$_14 = $receiver_3.iterator();
-          while (tmp$_14.hasNext()) {
-            var item = tmp$_14.next();
+          tmp$_15 = $receiver_3.iterator();
+          while (tmp$_15.hasNext()) {
+            var item = tmp$_15.next();
             if (equals(item.name, name_2) && item.typ === typ_1) {
               indexOfFirst$result = index;
               break indexOfFirst$break;
@@ -1502,16 +1533,16 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         var name_3 = typeof (tmp$_6 = parameter[0]) === 'string' ? tmp$_6 : throwCCE();
         var typ_2 = Kotlin.isType(tmp$_7 = parameter[1], Belegung$Companion$Kursart) ? tmp$_7 : throwCCE();
         var $receiver_5 = Belegung$Companion_getInstance().fächerauswahl;
-        var destination_4 = ArrayList_init();
-        var tmp$_15;
-        tmp$_15 = $receiver_5.iterator();
-        while (tmp$_15.hasNext()) {
-          var element_4 = tmp$_15.next();
-          if (equals(element_4.name, name_3) && element_4.typ === typ_2)
-            destination_4.add_11rb$(element_4);
+        var destination_5 = ArrayList_init();
+        var tmp$_16;
+        tmp$_16 = $receiver_5.iterator();
+        while (tmp$_16.hasNext()) {
+          var element_5 = tmp$_16.next();
+          if (equals(element_5.name, name_3) && element_5.typ === typ_2)
+            destination_5.add_11rb$(element_5);
         }
 
-        var fach_1 = firstOrNull(destination_4);
+        var fach_1 = firstOrNull(destination_5);
         if (fach_1 != null) {
           var $receiver_6 = this.aktuelleBelegung_0;
           if ($receiver_6.contains_11rb$(fach_1)) {
@@ -1519,15 +1550,15 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
             removeAll($receiver_6, Belegung$action$lambda$lambda(name_3));
             if (equals(fach_1.name, 'Wirtschaft') && fach_1.typ === Belegung$Companion$Kursart$LF_getInstance()) {
               var $receiver_7 = Belegung$Companion_getInstance().fächerauswahl;
-              var destination_5 = ArrayList_init();
-              var tmp$_16;
-              tmp$_16 = $receiver_7.iterator();
-              while (tmp$_16.hasNext()) {
-                var element_5 = tmp$_16.next();
-                if (element_5.attribute.contains_11rb$(Fachattribute$GeGe_getInstance()))
-                  destination_5.add_11rb$(element_5);
+              var destination_6 = ArrayList_init();
+              var tmp$_17;
+              tmp$_17 = $receiver_7.iterator();
+              while (tmp$_17.hasNext()) {
+                var element_6 = tmp$_17.next();
+                if (element_6.attribute.contains_11rb$(Fachattribute$GeGe_getInstance()))
+                  destination_6.add_11rb$(element_6);
               }
-              var gege = firstOrNull(destination_5);
+              var gege = firstOrNull(destination_6);
               if (gege != null) {
                 gege.alternativStunden = false;
                 gege.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
@@ -1536,28 +1567,28 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
             fach_1.alternativStunden = false;
           }
            else {
-            var destination_6 = ArrayList_init_0(collectionSizeOrDefault($receiver_6, 10));
-            var tmp$_17;
-            tmp$_17 = $receiver_6.iterator();
-            while (tmp$_17.hasNext()) {
-              var item_0 = tmp$_17.next();
-              destination_6.add_11rb$(item_0.name);
+            var destination_7 = ArrayList_init_0(collectionSizeOrDefault($receiver_6, 10));
+            var tmp$_18;
+            tmp$_18 = $receiver_6.iterator();
+            while (tmp$_18.hasNext()) {
+              var item_0 = tmp$_18.next();
+              destination_7.add_11rb$(item_0.name);
             }
-            if (destination_6.contains_11rb$(name_3)) {
+            if (destination_7.contains_11rb$(name_3)) {
               var $receiver_8 = Belegung$Companion_getInstance().fächerauswahl;
-              var destination_7 = ArrayList_init();
-              var tmp$_18;
-              tmp$_18 = $receiver_8.iterator();
-              while (tmp$_18.hasNext()) {
-                var element_6 = tmp$_18.next();
-                if (equals(element_6.name, name_3))
-                  destination_7.add_11rb$(element_6);
-              }
+              var destination_8 = ArrayList_init();
               var tmp$_19;
-              tmp$_19 = destination_7.iterator();
+              tmp$_19 = $receiver_8.iterator();
               while (tmp$_19.hasNext()) {
                 var element_7 = tmp$_19.next();
-                element_7.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
+                if (equals(element_7.name, name_3))
+                  destination_8.add_11rb$(element_7);
+              }
+              var tmp$_20;
+              tmp$_20 = destination_8.iterator();
+              while (tmp$_20.hasNext()) {
+                var element_8 = tmp$_20.next();
+                element_8.attribute.remove_11rb$(Fachattribute$mündlichePrüfung_getInstance());
               }
               removeAll($receiver_6, Belegung$action$lambda$lambda_0(name_3));
               fach_1.alternativStunden = false;
@@ -1577,6 +1608,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   function Belegung$Companion() {
     Belegung$Companion_instance = this;
+    this.kurswahlKorrekt = false;
     this.belegungsObjekt_b3txcs$_0 = this.belegungsObjekt_b3txcs$_0;
     this.aktuelleBelegung = ArrayList_init();
     this.fächer = emptyList();
@@ -1590,6 +1622,9 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     this.leistungsfachBereiche = setOf([Fachattribute$Mathematik_getInstance(), Fachattribute$Fremdsprache_getInstance(), Fachattribute$Naturwissenschaft_getInstance(), Fachattribute$Deutsch_getInstance()]);
     this.fächerauswahl_o9hkti$_0 = this.fächerauswahl_o9hkti$_0;
   }
+  Belegung$Companion.prototype.holeKurswahlKorrekt = function () {
+    return this.kurswahlKorrekt;
+  };
   Belegung$Companion.prototype.holeFächer = function () {
     return this.fächer;
   };
@@ -2338,6 +2373,10 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     return Variablen_instance;
   }
   function erstelleAuswahl$lambda$lambda($receiver) {
+    $receiver.unaryPlus_pdl1vz$('Einstellungen');
+    return Unit;
+  }
+  function erstelleAuswahl$lambda$lambda_0($receiver) {
     $receiver.unaryPlus_pdl1vz$('nicht');
     set_classes($receiver, setOf_0('rot'));
     return Unit;
@@ -2351,7 +2390,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
-  function erstelleAuswahl$lambda$lambda_0(closure$fächer) {
+  function erstelleAuswahl$lambda$lambda_1(closure$fächer) {
     return function ($receiver) {
       var tmp$;
       tmp$ = closure$fächer.iterator();
@@ -2393,22 +2432,27 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     erstelleRaster(aktuelleBelegung);
     visualisiereBelegung(aktuelleBelegung);
     eventsAnhängen(aktuelleBelegung);
+    Variablen_getInstance().status = aktuelleBelegung.serialisiere();
+    Variablen_getInstance().setzeHash();
     return Unit;
   }
-  function erstelleAuswahl$lambda$lambda_1($receiver) {
+  function erstelleAuswahl$lambda$lambda_2($receiver) {
     $receiver.text_61zpoe$('OK');
     set_onClickFunction($receiver, erstelleAuswahl$lambda$lambda$lambda_0);
     return Unit;
   }
   function erstelleAuswahl$lambda($receiver) {
-    $receiver.unaryPlus_pdl1vz$('Bitte die F\xE4cher abw\xE4hlen, die den Sch\xFClerinnen und Sch\xFClern bei der Auswahl ');
-    span($receiver, void 0, erstelleAuswahl$lambda$lambda);
+    h2($receiver, void 0, erstelleAuswahl$lambda$lambda);
+    $receiver.unaryPlus_pdl1vz$('Bitte die F\xE4cher abw\xE4hlen, die den Sch\xFClerinnen und Sch\xFClern bei der Auswahl an ihrer Schule ');
+    span($receiver, void 0, erstelleAuswahl$lambda$lambda_0);
     $receiver.unaryPlus_pdl1vz$(' angezeigt werden sollen.');
     get_br($receiver);
-    $receiver.unaryPlus_pdl1vz$('Danach auf OK dr\xFCcken. Daraufhin werden nur noch die \xFCbrigen F\xE4cher in der Auswahl angezeigt und der Link in der Adresszeile des Browsers kann an die Sch\xFClerinnen und Sch\xFCler weitergegeben werden. Somit sehen die Sch\xFClerinnen und Sch\xFCler beim Aufruf dieses Links nur noch die verbliebenen F\xE4cher dieser Liste und die Pflichtf\xE4cher.');
+    $receiver.unaryPlus_pdl1vz$('Danach auf OK dr\xFCcken.');
+    get_br($receiver);
+    $receiver.unaryPlus_pdl1vz$('Daraufhin werden nur noch die \xFCbrigen F\xE4cher inklusive der Pflichtf\xE4cher in der Kurswahl angezeigt und der Link in der Adresszeile des Browsers kann an die Sch\xFClerinnen und Sch\xFCler weitergegeben werden. Somit sehen die Sch\xFClerinnen und Sch\xFCler beim Aufruf dieses Links nur noch die verbliebenen F\xE4cher dieser Liste und die Pflichtf\xE4cher.');
     var fächer = Belegung$Companion_getInstance().holeFächer();
-    ul($receiver, void 0, erstelleAuswahl$lambda$lambda_0(fächer));
-    button($receiver, void 0, void 0, void 0, void 0, void 0, erstelleAuswahl$lambda$lambda_1);
+    ul($receiver, void 0, erstelleAuswahl$lambda$lambda_1(fächer));
+    button($receiver, void 0, void 0, void 0, void 0, void 0, erstelleAuswahl$lambda$lambda_2);
     return Unit;
   }
   function erstelleAuswahl() {
@@ -2590,7 +2634,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     };
   }
   var emptySet = Kotlin.kotlin.collections.emptySet_287e2$;
-  function erstelleRaster$lambda$lambda$lambda$lambda_9(closure$it) {
+  function erstelleRaster$lambda$lambda$lambda$lambda$lambda$lambda(closure$it) {
     return function ($receiver) {
       if (closure$it.kommentarart === Belegung$Kommentarart$SCHLECHT_getInstance()) {
         set_classes($receiver, setOf_0('rot'));
@@ -2605,22 +2649,46 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
-  function erstelleRaster$lambda$lambda_0(closure$aktuelleBelegung) {
+  function erstelleRaster$lambda$lambda$lambda$lambda$lambda(closure$it) {
     return function ($receiver) {
-      var meldungen = closure$aktuelleBelegung.holeFehler();
+      span($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda$lambda$lambda(closure$it));
+      return Unit;
+    };
+  }
+  function erstelleRaster$lambda$lambda$lambda_2(closure$meldungen) {
+    return function ($receiver) {
       var tmp$;
-      tmp$ = meldungen.iterator();
+      tmp$ = closure$meldungen.iterator();
       while (tmp$.hasNext()) {
         var element = tmp$.next();
-        div_0($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda_9(element));
+        li($receiver, void 0, erstelleRaster$lambda$lambda$lambda$lambda$lambda(element));
       }
       return Unit;
     };
+  }
+  function erstelleRaster$lambda$lambda_0(closure$aktuelleBelegung) {
+    return function ($receiver) {
+      var meldungen = closure$aktuelleBelegung.holeFehler();
+      ul($receiver, void 0, erstelleRaster$lambda$lambda$lambda_2(meldungen));
+      return Unit;
+    };
+  }
+  function erstelleRaster$lambda$lambda_1($receiver) {
+    if (Belegung$Companion_getInstance().holeKurswahlKorrekt()) {
+      $receiver.unaryPlus_pdl1vz$('Kurswahl g\xFCltig! Aber ohne Gew\xE4hr: bitte unbedingt zusammen mit dem Oberstufenberater \xFCberpr\xFCfen! ');
+      set_classes($receiver, setOf(['gr\xFCnText', 'fett']));
+    }
+     else {
+      $receiver.unaryPlus_pdl1vz$('Kurswahl ung\xFCltig!');
+      set_classes($receiver, setOf(['rotText', 'fett']));
+    }
+    return Unit;
   }
   function erstelleRaster$lambda(closure$darstellung, closure$aktuelleBelegung) {
     return function ($receiver) {
       table($receiver, void 0, erstelleRaster$lambda$lambda(closure$darstellung));
       div_0($receiver, void 0, erstelleRaster$lambda$lambda_0(closure$aktuelleBelegung));
+      div_0($receiver, void 0, erstelleRaster$lambda$lambda_1);
       return Unit;
     };
   }
