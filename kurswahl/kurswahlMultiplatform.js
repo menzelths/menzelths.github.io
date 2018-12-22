@@ -1039,11 +1039,43 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     var tmp$;
     var mukuSchonGeprüft = false;
     var kurssumme = 0;
+    var nawiSprZähler = 0;
     Belegung$Companion_getInstance().anrechnungspflichtig = ArrayList_init();
+    var $receiver = this.aktuelleBelegung_0;
+    var destination = ArrayList_init();
+    var tmp$_0;
+    tmp$_0 = $receiver.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
+      if (element.attribute.contains_11rb$(Fachattribute$MuKu_getInstance()) && element.typ === Belegung$Companion$Kursart$LF_getInstance())
+        destination.add_11rb$(element);
+    }
+    if (destination.size > 0) {
+      mukuSchonGeprüft = true;
+    }
+    var $receiver_0 = this.aktuelleBelegung_0;
+    var destination_0 = ArrayList_init();
+    var tmp$_1;
+    tmp$_1 = $receiver_0.iterator();
+    while (tmp$_1.hasNext()) {
+      var element_0 = tmp$_1.next();
+      if (element_0.attribute.contains_11rb$(Fachattribute$MuKu_getInstance()) && element_0.attribute.contains_11rb$(Fachattribute$MuKu_getInstance()))
+        destination_0.add_11rb$(element_0);
+    }
+    if (destination_0.size > 0) {
+      mukuSchonGeprüft = true;
+    }
     tmp$ = this.aktuelleBelegung_0.iterator();
     while (tmp$.hasNext()) {
       var f = tmp$.next();
       if (f.typ === Belegung$Companion$Kursart$LF_getInstance()) {
+        kurssumme = kurssumme + 4 | 0;
+        Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
+        if (f.attribute.contains_11rb$(Fachattribute$Naturwissenschaft_getInstance()) || f.attribute.contains_11rb$(Fachattribute$kannNawiErsetzen_getInstance())) {
+          nawiSprZähler = nawiSprZähler + 1 | 0;
+        }
+      }
+       else if (f.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
         kurssumme = kurssumme + 4 | 0;
         Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
       }
@@ -1058,8 +1090,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
           mukuSchonGeprüft = true;
         }
          else if (f.attribute.contains_11rb$(Fachattribute$Naturwissenschaft_getInstance()) || f.attribute.contains_11rb$(Fachattribute$kannNawiErsetzen_getInstance())) {
-          kurssumme = kurssumme + 4 | 0;
-          Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
+          if (nawiSprZähler < 3) {
+            kurssumme = kurssumme + 4 | 0;
+            Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
+            nawiSprZähler = nawiSprZähler + 1 | 0;
+          }
         }
          else if (f.attribute.contains_11rb$(Fachattribute$Fremdsprache_getInstance())) {
           if (f.alternativStunden) {
@@ -1067,49 +1102,52 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
             Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 0, 0])));
           }
            else {
-            kurssumme = kurssumme + 4 | 0;
-            Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
+            if (nawiSprZähler < 3) {
+              kurssumme = kurssumme + 4 | 0;
+              Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
+              nawiSprZähler = nawiSprZähler + 1 | 0;
+            }
           }
         }
          else if (f.attribute.contains_11rb$(Fachattribute$GeGe_getInstance())) {
-          var $receiver = this.aktuelleBelegung_0;
-          var destination = ArrayList_init();
-          var tmp$_0;
-          tmp$_0 = $receiver.iterator();
-          while (tmp$_0.hasNext()) {
-            var element = tmp$_0.next();
-            if (equals(element.name, 'Gemeinschaftskunde') && element.typ === Belegung$Companion$Kursart$LF_getInstance())
-              destination.add_11rb$(element);
+          var $receiver_1 = this.aktuelleBelegung_0;
+          var destination_1 = ArrayList_init();
+          var tmp$_2;
+          tmp$_2 = $receiver_1.iterator();
+          while (tmp$_2.hasNext()) {
+            var element_1 = tmp$_2.next();
+            if (equals(element_1.name, 'Gemeinschaftskunde') && element_1.typ === Belegung$Companion$Kursart$LF_getInstance())
+              destination_1.add_11rb$(element_1);
           }
-          if (destination.size > 0) {
+          if (destination_1.size > 0) {
             kurssumme = kurssumme + 2 | 0;
-            Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 0, 0])));
+            Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 0, 0, 1])));
           }
            else {
-            var $receiver_0 = this.aktuelleBelegung_0;
-            var destination_0 = ArrayList_init();
-            var tmp$_1;
-            tmp$_1 = $receiver_0.iterator();
-            while (tmp$_1.hasNext()) {
-              var element_0 = tmp$_1.next();
-              if (equals(element_0.name, 'Geographie') && element_0.typ === Belegung$Companion$Kursart$LF_getInstance())
-                destination_0.add_11rb$(element_0);
+            var $receiver_2 = this.aktuelleBelegung_0;
+            var destination_2 = ArrayList_init();
+            var tmp$_3;
+            tmp$_3 = $receiver_2.iterator();
+            while (tmp$_3.hasNext()) {
+              var element_2 = tmp$_3.next();
+              if (equals(element_2.name, 'Geographie') && element_2.typ === Belegung$Companion$Kursart$LF_getInstance())
+                destination_2.add_11rb$(element_2);
             }
-            if (destination_0.size > 0) {
+            if (destination_2.size > 0) {
               kurssumme = kurssumme + 2 | 0;
-              Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 0, 0])));
+              Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([0, 1, 1, 0])));
             }
              else {
-              var $receiver_1 = this.aktuelleBelegung_0;
-              var destination_1 = ArrayList_init();
-              var tmp$_2;
-              tmp$_2 = $receiver_1.iterator();
-              while (tmp$_2.hasNext()) {
-                var element_1 = tmp$_2.next();
-                if (equals(element_1.name, 'Wirtschaft') && element_1.typ === Belegung$Companion$Kursart$LF_getInstance())
-                  destination_1.add_11rb$(element_1);
+              var $receiver_3 = this.aktuelleBelegung_0;
+              var destination_3 = ArrayList_init();
+              var tmp$_4;
+              tmp$_4 = $receiver_3.iterator();
+              while (tmp$_4.hasNext()) {
+                var element_3 = tmp$_4.next();
+                if (equals(element_3.name, 'Wirtschaft') && element_3.typ === Belegung$Companion$Kursart$LF_getInstance())
+                  destination_3.add_11rb$(element_3);
               }
-              if (destination_1.size > 0) {
+              if (destination_3.size > 0) {
                 kurssumme = kurssumme + 2 | 0;
                 Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 0, 1, 0])));
               }
@@ -1125,10 +1163,6 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
           Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
         }
       }
-       else if (f.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
-        kurssumme = kurssumme + 4 | 0;
-        Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
-      }
     }
     if (kurssumme === 40) {
       Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$GUT_getInstance(), 'Es sind genau 40 anrechnungspflichtige Kurse in der Belegung vorhanden.'));
@@ -1139,22 +1173,22 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
      else if (kurssumme > 40) {
       Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es sind mit ' + kurssumme + ' mehr als 40 anrechnungspflichtige Kurse in der Belegung vorhanden.'));
     }
-    var tmp$_3;
-    tmp$_3 = Belegung$Companion_getInstance().anrechnungspflichtig.iterator();
-    while (tmp$_3.hasNext()) {
-      var element_2 = tmp$_3.next();
-      var wert = element_2;
-      var $receiver_2 = Belegung$Companion_getInstance().fächer;
-      var destination_2 = ArrayList_init();
-      var tmp$_4;
-      tmp$_4 = $receiver_2.iterator();
-      while (tmp$_4.hasNext()) {
-        var element_3 = tmp$_4.next();
-        if (element_3.id === wert.id)
-          destination_2.add_11rb$(element_3);
+    var tmp$_5;
+    tmp$_5 = Belegung$Companion_getInstance().anrechnungspflichtig.iterator();
+    while (tmp$_5.hasNext()) {
+      var element_4 = tmp$_5.next();
+      var wert = element_4;
+      var $receiver_4 = Belegung$Companion_getInstance().fächer;
+      var destination_4 = ArrayList_init();
+      var tmp$_6;
+      tmp$_6 = $receiver_4.iterator();
+      while (tmp$_6.hasNext()) {
+        var element_5 = tmp$_6.next();
+        if (element_5.id === wert.id)
+          destination_4.add_11rb$(element_5);
       }
-      var fachname = first(destination_2).name;
-      println(fachname + ' ' + element_2.stunden);
+      var fachname = first(destination_4).name;
+      println(fachname + ' ' + element_4.stunden);
     }
     return kurssumme <= 40;
   };
@@ -2681,6 +2715,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       }
       if (closure$zeile.anrechnungspflichtig.get_za3lpa$(closure$i) === 1) {
         klassen.add_11rb$('fett');
+        klassen.add_11rb$('blau');
       }
       set_classes($receiver, klassen);
       return Unit;
@@ -2761,7 +2796,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function erstelleRaster$lambda$lambda_1($receiver) {
     if (Belegung$Companion_getInstance().holeKurswahlKorrekt()) {
-      $receiver.unaryPlus_pdl1vz$('Kurswahl g\xFCltig! Anrechnungspflichtige Kurse sind in der Kurswahl fett dargestellt.');
+      $receiver.unaryPlus_pdl1vz$('Kurswahl g\xFCltig! Anrechnungspflichtige Kurse sind in der Kurswahl blau und fett dargestellt.');
       get_br($receiver);
       $receiver.unaryPlus_pdl1vz$('Richtigkeit der Kurswahl ohne Gew\xE4hr: bitte unbedingt zusammen mit dem Oberstufenberater \xFCberpr\xFCfen! ');
       set_classes($receiver, setOf(['gr\xFCnText', 'fett']));
