@@ -3091,3 +3091,5 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   Kotlin.defineModule('kurswahlMultiplatform', _);
   return _;
 }(typeof kurswahlMultiplatform === 'undefined' ? {} : kurswahlMultiplatform, kotlin, this['kotlinx-html-js']);
+
+//# sourceMappingURL=kurswahlMultiplatform.js.map
