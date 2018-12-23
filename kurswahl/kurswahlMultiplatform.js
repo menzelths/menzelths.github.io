@@ -2422,7 +2422,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   function Variablen() {
     Variablen_instance = this;
-    this.version = '0.1_2018_12_23';
+    this.version = '0.1.1_2018_12_23';
     this.status = '';
     this.excluded = '';
     this.excludedList = ArrayList_init();
@@ -2652,6 +2652,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       if (equals(closure$zeile.gewählt, Belegung$Companion$Kursart$LF_getInstance())) {
         klassen.add_11rb$('belegt_LF');
       }
+      klassen.add_11rb$('zentriert');
       set_classes($receiver, klassen);
       return Unit;
     };
@@ -2675,6 +2676,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
           klassen.add_11rb$('belegt_WF');
         }
       }
+      klassen.add_11rb$('zentriert');
       set_classes($receiver, klassen);
       return Unit;
     };
@@ -2689,14 +2691,16 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         if (Kotlin.isType(gewählt, Belegung$Companion$Kursart)) {
           if (equals(gewählt, Belegung$Companion$Kursart$BF_getInstance())) {
             set_id($receiver, closure$zeile.fachnameOriginal + '_mBF');
-            klassen.add_11rb$('belegt_m');
           }
            else if (equals(gewählt, Belegung$Companion$Kursart$WF_getInstance())) {
             set_id($receiver, closure$zeile.fachnameOriginal + '_mWF');
-            klassen.add_11rb$('belegt_m');
           }
         }
       }
+      if (closure$zeile.mündlich) {
+        klassen.add_11rb$('belegt_m');
+      }
+      klassen.add_11rb$('zentriert');
       set_classes($receiver, klassen);
       return Unit;
     };
@@ -2729,6 +2733,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         klassen.add_11rb$('fett');
         klassen.add_11rb$('blau');
       }
+      klassen.add_11rb$('zentriert');
       set_classes($receiver, klassen);
       return Unit;
     };
@@ -2822,7 +2827,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function erstelleRaster$lambda$lambda_2($receiver) {
     get_br($receiver);
-    $receiver.unaryPlus_pdl1vz$('Version 0.1_2018_12_23');
+    $receiver.unaryPlus_pdl1vz$('Version 0.1.1_2018_12_23');
     set_classes($receiver, setOf_0('klein'));
     return Unit;
   }
