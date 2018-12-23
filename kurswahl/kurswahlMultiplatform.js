@@ -560,7 +560,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
             v.attribute.contains_11rb$(Fachattribute$Seminarfach_getInstance());
             klickbarWahl.add_11rb$(v.typ);
             stunden = v.alternativStunden === false ? v.stunden : v.stundenAlternativ;
-            if (v.typ === Belegung$Companion$Kursart$WF_getInstance()) {
+            if (v.typ === Belegung$Companion$Kursart$WF_getInstance() && !v.stundenAlternativ.isEmpty()) {
               stundenAlternativVorhanden = true;
             }
             if (v.typ === Belegung$Companion$Kursart$BF_getInstance() && v.attribute.contains_11rb$(Fachattribute$spätbeginnend_getInstance())) {
@@ -1723,6 +1723,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     this.fehlerMeldungen = ArrayList_init();
     this.Text = hashMapOf([to(Belegung$Companion$Kursart$BF_getInstance(), 'Basisfach'), to(Aufgabenfeld$I_getInstance(), 'Sprachlich'), to(Aufgabenfeld$II_getInstance(), 'Gesellschaftswissenschaften'), to(Aufgabenfeld$III_getInstance(), 'Mathematik und Naturwissenschaften')]);
     this.leistungsfachBereiche = setOf([Fachattribute$Mathematik_getInstance(), Fachattribute$Fremdsprache_getInstance(), Fachattribute$Naturwissenschaft_getInstance(), Fachattribute$Deutsch_getInstance()]);
+    this.wfZweiKursig = setOf(['Astronomie', 'Darstellende Geometrie', 'Probleml\xF6sen mit CAS', 'Geologie', 'Literatur', 'Philosophie', 'Psychologie']);
     this.fächerauswahl_o9hkti$_0 = this.fächerauswahl_o9hkti$_0;
   }
   function Belegung$Companion$Anrechnung(id, stunden) {
@@ -2010,9 +2011,13 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
             stundenbelegung = mutableListOf([3, 3, 0, 0]);
           }
           if (art === Belegung$Companion$Kursart$WF_getInstance()) {
-            stundenbelegungAlternativ = mutableListOf([2, 2, 0, 0]);
             if (setOf(['VK Mathematik', 'Wahlfach Informatik', 'VK Sprache', 'Literatur und Theater']).contains_11rb$(fach.name)) {
               mündlichMöglich = true;
+              stundenbelegungAlternativ = mutableListOf([2, 2, 0, 0]);
+            }
+            if (this.wfZweiKursig.contains_11rb$(fach.name)) {
+              stundenbelegung = mutableListOf([2, 2, 0, 0]);
+              stundenbelegungAlternativ = ArrayList_init();
             }
           }
           liste.add_11rb$(new Belegung$Companion$Belegfach(fach.name, art, fach.aufgabenfeld, stundenbelegung, stundenbelegungAlternativ, false, toMutableList(fach.attribute), fach.id, mündlichMöglich));
@@ -2438,7 +2443,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   function Variablen() {
     Variablen_instance = this;
-    this.version = '0.1.2_2018_12_23';
+    this.version = '0.1.3_2018_12_23';
     this.status = '';
     this.excluded = '';
     this.excludedList = ArrayList_init();
@@ -2843,7 +2848,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function erstelleRaster$lambda$lambda_2($receiver) {
     get_br($receiver);
-    $receiver.unaryPlus_pdl1vz$('Version 0.1.2_2018_12_23');
+    $receiver.unaryPlus_pdl1vz$('Version 0.1.3_2018_12_23');
     set_classes($receiver, setOf_0('klein'));
     return Unit;
   }
