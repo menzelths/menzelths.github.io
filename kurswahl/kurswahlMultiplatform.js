@@ -1040,6 +1040,8 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     var mukuSchonGeprüft = false;
     var kurssumme = 0;
     var nawiSprZähler = 0;
+    var nawiZähler = 0;
+    var fsZähler = 0;
     Belegung$Companion_getInstance().anrechnungspflichtig = ArrayList_init();
     var $receiver = this.aktuelleBelegung_0;
     var destination = ArrayList_init();
@@ -1073,6 +1075,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
         if (f.attribute.contains_11rb$(Fachattribute$Naturwissenschaft_getInstance()) || f.attribute.contains_11rb$(Fachattribute$kannNawiErsetzen_getInstance())) {
           nawiSprZähler = nawiSprZähler + 1 | 0;
+          nawiZähler = nawiZähler + 1 | 0;
+        }
+        if (f.attribute.contains_11rb$(Fachattribute$Fremdsprache_getInstance())) {
+          nawiSprZähler = nawiSprZähler + 1 | 0;
+          fsZähler = fsZähler + 1 | 0;
         }
       }
        else if (f.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
@@ -1090,10 +1097,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
           mukuSchonGeprüft = true;
         }
          else if (f.attribute.contains_11rb$(Fachattribute$Naturwissenschaft_getInstance()) || f.attribute.contains_11rb$(Fachattribute$kannNawiErsetzen_getInstance())) {
-          if (nawiSprZähler < 3) {
+          if (nawiSprZähler < 3 && nawiZähler < 2 && fsZähler < 2) {
             kurssumme = kurssumme + 4 | 0;
             Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
             nawiSprZähler = nawiSprZähler + 1 | 0;
+            nawiZähler = nawiZähler + 1 | 0;
           }
         }
          else if (f.attribute.contains_11rb$(Fachattribute$Fremdsprache_getInstance())) {
@@ -1102,10 +1110,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
             Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 0, 0])));
           }
            else {
-            if (nawiSprZähler < 3) {
+            if (nawiSprZähler < 3 && nawiZähler < 2 && fsZähler < 2) {
               kurssumme = kurssumme + 4 | 0;
               Belegung$Companion_getInstance().anrechnungspflichtig.add_11rb$(new Belegung$Companion$Anrechnung(f.id, mutableListOf([1, 1, 1, 1])));
               nawiSprZähler = nawiSprZähler + 1 | 0;
+              fsZähler = fsZähler + 1 | 0;
             }
           }
         }
@@ -2413,6 +2422,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   function Variablen() {
     Variablen_instance = this;
+    this.version = '0.1_2018_12_23';
     this.status = '';
     this.excluded = '';
     this.excludedList = ArrayList_init();
@@ -2679,9 +2689,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         if (Kotlin.isType(gewählt, Belegung$Companion$Kursart)) {
           if (equals(gewählt, Belegung$Companion$Kursart$BF_getInstance())) {
             set_id($receiver, closure$zeile.fachnameOriginal + '_mBF');
+            klassen.add_11rb$('belegt_m');
           }
            else if (equals(gewählt, Belegung$Companion$Kursart$WF_getInstance())) {
             set_id($receiver, closure$zeile.fachnameOriginal + '_mWF');
+            klassen.add_11rb$('belegt_m');
           }
         }
       }
@@ -2805,6 +2817,13 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       $receiver.unaryPlus_pdl1vz$('Kurswahl ung\xFCltig!');
       set_classes($receiver, setOf(['rotText', 'fett']));
     }
+    get_br($receiver);
+    return Unit;
+  }
+  function erstelleRaster$lambda$lambda_2($receiver) {
+    get_br($receiver);
+    $receiver.unaryPlus_pdl1vz$('Version 0.1_2018_12_23');
+    set_classes($receiver, setOf_0('klein'));
     return Unit;
   }
   function erstelleRaster$lambda(closure$darstellung, closure$aktuelleBelegung) {
@@ -2812,6 +2831,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       table($receiver, void 0, erstelleRaster$lambda$lambda(closure$darstellung));
       div_0($receiver, void 0, erstelleRaster$lambda$lambda_0(closure$aktuelleBelegung));
       div_0($receiver, void 0, erstelleRaster$lambda$lambda_1);
+      div_0($receiver, void 0, erstelleRaster$lambda$lambda_2);
       return Unit;
     };
   }
