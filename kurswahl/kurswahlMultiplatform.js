@@ -95,6 +95,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     fächer.add_11rb$(new Fach('Franz\xF6sisch', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 2, false));
     fächer.add_11rb$(new Fach('Latein', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 3, false));
     fächer.add_11rb$(new Fach('Griechisch', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 4, false));
+    fächer.add_11rb$(new Fach('Hebr\xE4isch', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 16, false));
     fächer.add_11rb$(new Fach('Russisch', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 5, false));
     fächer.add_11rb$(new Fach('Spanisch', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 6, false));
     fächer.add_11rb$(new Fach('Italienisch', Aufgabenfeld$I_getInstance(), listOf([5, 3, 0]), listOf_0(Fachattribute$Fremdsprache_getInstance()), 7, false));
@@ -663,7 +664,12 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
               klickbarWahl.add_11rb$(v.typ);
             }
             if (this.anzahlMündlichePrüfungen_0() < 2 && this.fachAlsBasisfachOderWahlfachGewählt_0(v.name) && this.alleHalbjahreBelegt_0(v.name, v.typ)) {
-              mündlichKlickbar = true;
+              if (v.typ === Belegung$Companion$Kursart$BF_getInstance()) {
+                mündlichKlickbar = true;
+              }
+               else if (v.typ === Belegung$Companion$Kursart$WF_getInstance() && v.mündlichMöglich) {
+                mündlichKlickbar = true;
+              }
             }
             if (v.attribute.contains_11rb$(Fachattribute$mündlichePrüfung_getInstance())) {
               mündlichKlickbar = true;
@@ -1711,7 +1717,8 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     this.binär2 = listOf(['00', '01', '10', '11']);
     this.binär3 = listOf(['000', '001', '010', '011', '100', '101', '110', '111']);
     this.naturwissenschaften = listOf(['Physik', 'Chemie', 'Biologie']);
-    this.sprachen = listOf(['Englisch', 'Franz\xF6sisch', 'Latein', 'Griechisch', 'Russisch', 'Spanisch', 'Italienisch', 'Portugiesisch', 'Chinesisch']);
+    this.sprachen = listOf(['Englisch', 'Franz\xF6sisch', 'Latein', 'Griechisch', 'Russisch', 'Spanisch', 'Italienisch', 'Portugiesisch', 'Chinesisch', 'Hebr\xE4isch']);
+    this.spätbeginnend = listOf(['Franz\xF6sisch', 'Spanisch', 'Latein', 'Hebr\xE4isch', 'Griechisch']);
     this.lfOderBfOderBfMündlich = hashMapOf([to('LF', '10'), to('BF', '01'), to('BFm\xFCndlich', '11')]);
     this.fehlerMeldungen = ArrayList_init();
     this.Text = hashMapOf([to(Belegung$Companion$Kursart$BF_getInstance(), 'Basisfach'), to(Aufgabenfeld$I_getInstance(), 'Sprachlich'), to(Aufgabenfeld$II_getInstance(), 'Gesellschaftswissenschaften'), to(Aufgabenfeld$III_getInstance(), 'Mathematik und Naturwissenschaften')]);
@@ -1887,7 +1894,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     }
   }
   Belegung$Companion$Aktion.valueOf_61zpoe$ = Belegung$Companion$Aktion$valueOf;
-  function Belegung$Companion$Belegfach(name, typ, aufgabenfeld, stunden, stundenAlternativ, alternativStunden, attribute, id) {
+  function Belegung$Companion$Belegfach(name, typ, aufgabenfeld, stunden, stundenAlternativ, alternativStunden, attribute, id, mündlichMöglich) {
     this.name = name;
     this.typ = typ;
     this.aufgabenfeld = aufgabenfeld;
@@ -1896,6 +1903,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     this.alternativStunden = alternativStunden;
     this.attribute = attribute;
     this.id = id;
+    this.mündlichMöglich = mündlichMöglich;
   }
   Belegung$Companion$Belegfach.$metadata$ = {
     kind: Kind_CLASS,
@@ -1926,11 +1934,14 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   Belegung$Companion$Belegfach.prototype.component8 = function () {
     return this.id;
   };
-  Belegung$Companion$Belegfach.prototype.copy_e6h7pu$ = function (name, typ, aufgabenfeld, stunden, stundenAlternativ, alternativStunden, attribute, id) {
-    return new Belegung$Companion$Belegfach(name === void 0 ? this.name : name, typ === void 0 ? this.typ : typ, aufgabenfeld === void 0 ? this.aufgabenfeld : aufgabenfeld, stunden === void 0 ? this.stunden : stunden, stundenAlternativ === void 0 ? this.stundenAlternativ : stundenAlternativ, alternativStunden === void 0 ? this.alternativStunden : alternativStunden, attribute === void 0 ? this.attribute : attribute, id === void 0 ? this.id : id);
+  Belegung$Companion$Belegfach.prototype.component9 = function () {
+    return this.mündlichMöglich;
+  };
+  Belegung$Companion$Belegfach.prototype.copy_3iazsl$ = function (name, typ, aufgabenfeld, stunden, stundenAlternativ, alternativStunden, attribute, id, mündlichMöglich) {
+    return new Belegung$Companion$Belegfach(name === void 0 ? this.name : name, typ === void 0 ? this.typ : typ, aufgabenfeld === void 0 ? this.aufgabenfeld : aufgabenfeld, stunden === void 0 ? this.stunden : stunden, stundenAlternativ === void 0 ? this.stundenAlternativ : stundenAlternativ, alternativStunden === void 0 ? this.alternativStunden : alternativStunden, attribute === void 0 ? this.attribute : attribute, id === void 0 ? this.id : id, mündlichMöglich === void 0 ? this.mündlichMöglich : mündlichMöglich);
   };
   Belegung$Companion$Belegfach.prototype.toString = function () {
-    return 'Belegfach(name=' + Kotlin.toString(this.name) + (', typ=' + Kotlin.toString(this.typ)) + (', aufgabenfeld=' + Kotlin.toString(this.aufgabenfeld)) + (', stunden=' + Kotlin.toString(this.stunden)) + (', stundenAlternativ=' + Kotlin.toString(this.stundenAlternativ)) + (', alternativStunden=' + Kotlin.toString(this.alternativStunden)) + (', attribute=' + Kotlin.toString(this.attribute)) + (', id=' + Kotlin.toString(this.id)) + ')';
+    return 'Belegfach(name=' + Kotlin.toString(this.name) + (', typ=' + Kotlin.toString(this.typ)) + (', aufgabenfeld=' + Kotlin.toString(this.aufgabenfeld)) + (', stunden=' + Kotlin.toString(this.stunden)) + (', stundenAlternativ=' + Kotlin.toString(this.stundenAlternativ)) + (', alternativStunden=' + Kotlin.toString(this.alternativStunden)) + (', attribute=' + Kotlin.toString(this.attribute)) + (', id=' + Kotlin.toString(this.id)) + (', m\xFCndlichM\xF6glich=' + Kotlin.toString(this.mündlichMöglich)) + ')';
   };
   Belegung$Companion$Belegfach.prototype.hashCode = function () {
     var result = 0;
@@ -1942,10 +1953,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
     result = result * 31 + Kotlin.hashCode(this.alternativStunden) | 0;
     result = result * 31 + Kotlin.hashCode(this.attribute) | 0;
     result = result * 31 + Kotlin.hashCode(this.id) | 0;
+    result = result * 31 + Kotlin.hashCode(this.mündlichMöglich) | 0;
     return result;
   };
   Belegung$Companion$Belegfach.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.typ, other.typ) && Kotlin.equals(this.aufgabenfeld, other.aufgabenfeld) && Kotlin.equals(this.stunden, other.stunden) && Kotlin.equals(this.stundenAlternativ, other.stundenAlternativ) && Kotlin.equals(this.alternativStunden, other.alternativStunden) && Kotlin.equals(this.attribute, other.attribute) && Kotlin.equals(this.id, other.id)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.typ, other.typ) && Kotlin.equals(this.aufgabenfeld, other.aufgabenfeld) && Kotlin.equals(this.stunden, other.stunden) && Kotlin.equals(this.stundenAlternativ, other.stundenAlternativ) && Kotlin.equals(this.alternativStunden, other.alternativStunden) && Kotlin.equals(this.attribute, other.attribute) && Kotlin.equals(this.id, other.id) && Kotlin.equals(this.mündlichMöglich, other.mündlichMöglich)))));
   };
   Object.defineProperty(Belegung$Companion.prototype, 'f\xE4cherauswahl', {
     get: function () {
@@ -1965,6 +1977,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
       var fach = tmp$.next();
       tmp$_0 = fach.stunden.size;
       for (var index = 0; index < tmp$_0; index++) {
+        var mündlichMöglich = false;
         var stundenbelegung = ArrayList_init();
         var stundenbelegungAlternativ = ArrayList_init();
         if (fach.stunden.get_za3lpa$(index) > 0) {
@@ -1982,7 +1995,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
               break;
           }
           var art = tmp$_1;
-          if (fach.attribute.contains_11rb$(Fachattribute$Fremdsprache_getInstance()) && art === Belegung$Companion$Kursart$BF_getInstance()) {
+          if (this.spätbeginnend.contains_11rb$(fach.name) && art === Belegung$Companion$Kursart$BF_getInstance()) {
             stundenbelegungAlternativ = mutableListOf([4, 4, 4, 4]);
             var attr2 = toMutableList(fach.attribute);
             if (!attr2.contains_11rb$(Fachattribute$spätbeginnend_getInstance())) {
@@ -1998,8 +2011,11 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
           }
           if (art === Belegung$Companion$Kursart$WF_getInstance()) {
             stundenbelegungAlternativ = mutableListOf([2, 2, 0, 0]);
+            if (setOf(['VK Mathematik', 'Wahlfach Informatik', 'VK Sprache', 'Literatur und Theater']).contains_11rb$(fach.name)) {
+              mündlichMöglich = true;
+            }
           }
-          liste.add_11rb$(new Belegung$Companion$Belegfach(fach.name, art, fach.aufgabenfeld, stundenbelegung, stundenbelegungAlternativ, false, toMutableList(fach.attribute), fach.id));
+          liste.add_11rb$(new Belegung$Companion$Belegfach(fach.name, art, fach.aufgabenfeld, stundenbelegung, stundenbelegungAlternativ, false, toMutableList(fach.attribute), fach.id, mündlichMöglich));
         }
       }
     }
@@ -2422,7 +2438,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   function Variablen() {
     Variablen_instance = this;
-    this.version = '0.1.1_2018_12_23';
+    this.version = '0.1.2_2018_12_23';
     this.status = '';
     this.excluded = '';
     this.excludedList = ArrayList_init();
@@ -2827,7 +2843,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function erstelleRaster$lambda$lambda_2($receiver) {
     get_br($receiver);
-    $receiver.unaryPlus_pdl1vz$('Version 0.1.1_2018_12_23');
+    $receiver.unaryPlus_pdl1vz$('Version 0.1.2_2018_12_23');
     set_classes($receiver, setOf_0('klein'));
     return Unit;
   }
