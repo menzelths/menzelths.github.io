@@ -812,7 +812,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         var anzahlKlassischeNaturwissenschaften = naturwissenschaften.size - naturwissenschaftersatz.size | 0;
         if (anzahlKlassischeNaturwissenschaften === 0) {
           println('Es muss mindestens eine klassische Naturwissenschaft belegt werden.');
-          Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es muss mindestens eine klassische Naturwissenschaft belegt werden.'));
+          Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es muss mindestens eine klassische Naturwissenschaft (Biologie, Chemie, Physik) belegt werden.'));
           return false;
         }
          else if (anzahlKlassischeNaturwissenschaften === 1) {
@@ -841,7 +841,23 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
         }
       }
        else {
-        return true;
+        var tmp$_8 = sprachen.size >= 2;
+        if (tmp$_8) {
+          tmp$_8 = naturwissenschaften.size <= 2;
+        }
+        if (tmp$_8) {
+          var anzahlKlassischeNaturwissenschaften_0 = naturwissenschaften.size - naturwissenschaftersatz.size | 0;
+          if (anzahlKlassischeNaturwissenschaften_0 === 0) {
+            Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$SCHLECHT_getInstance(), 'Es muss mindestens eine klassische Naturwissenschaft (Biologie, Chemie, Physik) belegt werden.'));
+            return false;
+          }
+           else {
+            return true;
+          }
+        }
+         else {
+          return true;
+        }
       }
     }
   };
