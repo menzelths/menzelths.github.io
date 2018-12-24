@@ -591,7 +591,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
               }
               if (destination_3.size > 0) {
                 stundenAlternativVorhanden = false;
-                v.stunden = mutableListOf([2, 0, 0, 2]);
+                v.stunden = mutableListOf([0, 2, 2, 0]);
                 name = 'Geographie';
                 stunden = v.stunden;
               }
@@ -606,7 +606,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
               }
               if (destination_4.size > 0) {
                 stundenAlternativVorhanden = false;
-                v.stunden = mutableListOf([0, 2, 2, 0]);
+                v.stunden = mutableListOf([2, 0, 0, 2]);
                 stunden = v.stunden;
                 name = 'Gemeinschaftskunde';
               }
@@ -2443,7 +2443,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   function Variablen() {
     Variablen_instance = this;
-    this.version = '0.1.3_2018_12_23';
+    this.version = '0.1.4_2018_12_23';
     this.status = '';
     this.excluded = '';
     this.excludedList = ArrayList_init();
@@ -2848,7 +2848,7 @@ var kurswahlMultiplatform = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function erstelleRaster$lambda$lambda_2($receiver) {
     get_br($receiver);
-    $receiver.unaryPlus_pdl1vz$('Version 0.1.3_2018_12_23');
+    $receiver.unaryPlus_pdl1vz$('Version 0.1.4_2018_12_23');
     set_classes($receiver, setOf_0('klein'));
     return Unit;
   }
