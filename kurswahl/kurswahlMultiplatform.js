@@ -200,6 +200,7 @@
     Belegung$Kommentarart$GUT_instance = new Belegung$Kommentarart('GUT', 0);
     Belegung$Kommentarart$SCHLECHT_instance = new Belegung$Kommentarart('SCHLECHT', 1);
     Belegung$Kommentarart$NEUTRAL_instance = new Belegung$Kommentarart('NEUTRAL', 2);
+    Belegung$Kommentarart$HINWEIS_instance = new Belegung$Kommentarart('HINWEIS', 3);
   }
   var Belegung$Kommentarart$GUT_instance;
   function Belegung$Kommentarart$GUT_getInstance() {
@@ -216,13 +217,18 @@
     Belegung$Kommentarart_initFields();
     return Belegung$Kommentarart$NEUTRAL_instance;
   }
+  var Belegung$Kommentarart$HINWEIS_instance;
+  function Belegung$Kommentarart$HINWEIS_getInstance() {
+    Belegung$Kommentarart_initFields();
+    return Belegung$Kommentarart$HINWEIS_instance;
+  }
   Belegung$Kommentarart.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'Kommentarart',
     interfaces: [Enum]
   };
   function Belegung$Kommentarart$values() {
-    return [Belegung$Kommentarart$GUT_getInstance(), Belegung$Kommentarart$SCHLECHT_getInstance(), Belegung$Kommentarart$NEUTRAL_getInstance()];
+    return [Belegung$Kommentarart$GUT_getInstance(), Belegung$Kommentarart$SCHLECHT_getInstance(), Belegung$Kommentarart$NEUTRAL_getInstance(), Belegung$Kommentarart$HINWEIS_getInstance()];
   }
   Belegung$Kommentarart.values = Belegung$Kommentarart$values;
   function Belegung$Kommentarart$valueOf(name) {
@@ -233,6 +239,8 @@
         return Belegung$Kommentarart$SCHLECHT_getInstance();
       case 'NEUTRAL':
         return Belegung$Kommentarart$NEUTRAL_getInstance();
+      case 'HINWEIS':
+        return Belegung$Kommentarart$HINWEIS_getInstance();
       default:throwISE('No enum constant sample.Belegung.Kommentarart.' + name);
     }
   }
@@ -1274,6 +1282,22 @@
     }
     return kurssumme <= 40;
   };
+  Belegung.prototype.testeWirtschaftAlsLeistungsfach_0 = function () {
+    var $receiver = this.aktuelleBelegung_0;
+    var destination = ArrayList_init();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (equals(element.name, 'Wirtschaft') && element.typ === Belegung$Companion$Kursart$LF_getInstance())
+        destination.add_11rb$(element);
+    }
+    if (destination.size > 0) {
+      Belegung$Companion_getInstance().fehlerMeldungen.add_11rb$(new Belegung$Kommentar(Belegung$Kommentarart$HINWEIS_getInstance(), 'Mit Wirtschaft als Leistungsfach kann in Geographie und Gemeinschaftskunde freiwillig jeweils auch das zweite Kurshalbjahr in J1 belegt und angerechnet werden. Diese Funktion wird von diesem Programm zur Zeit nicht unterst\xFCtzt.'));
+      return true;
+    }
+    return false;
+  };
   Belegung.prototype.holeWochenStunden_0 = function () {
     var tmp$;
     var stundensumme = mutableListOf([0, 0, 0, 0]);
@@ -1634,6 +1658,7 @@
         Belegung$Companion_getInstance().kurswahlKorrekt = false;
         Belegung$Companion_getInstance().anrechnungspflichtig = ArrayList_init();
         var fehlerListe = ArrayList_init();
+        this.testeWirtschaftAlsLeistungsfach_0();
         fehlerListe.add_11rb$(this.testeMehrfach_0());
         fehlerListe.add_11rb$(this.testeLeistungsfächer_0());
         fehlerListe.add_11rb$(this.testeBereichsabdeckungPrüfung_0());
@@ -3156,6 +3181,9 @@
        else if (closure$it.kommentarart === Belegung$Kommentarart$GUT_getInstance()) {
         set_classes($receiver, setOf_0('gr\xFCn'));
       }
+       else if (closure$it.kommentarart === Belegung$Kommentarart$HINWEIS_getInstance()) {
+        set_classes($receiver, setOf_0('hinweis'));
+      }
        else {
         set_classes($receiver, emptySet());
       }
@@ -3365,6 +3393,9 @@
   });
   Object.defineProperty(Belegung$Kommentarart, 'NEUTRAL', {
     get: Belegung$Kommentarart$NEUTRAL_getInstance
+  });
+  Object.defineProperty(Belegung$Kommentarart, 'HINWEIS', {
+    get: Belegung$Kommentarart$HINWEIS_getInstance
   });
   Belegung.Kommentarart = Belegung$Kommentarart;
   Belegung.Summe = Belegung$Summe;
